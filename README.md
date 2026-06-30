@@ -1,36 +1,161 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# art-business-os Ver.1.0
 
-## Getting Started
+アーティスト（スニーカーペイント・箔画・抽象画・ワークショップ）向けの、広告宣伝・集客・販売導線支援システムです。
 
-First, run the development server:
+ブランド登録からAIコンサルタント診断まで、認知 → 集客 → 販売 → リピーター化の一連の流れをブラウザ上でサポートします。
+
+---
+
+## 起動方法（ローカル確認）
+
+### 前提
+
+- Node.js 18 以上がインストールされていること
+- このリポジトリをクローン済みであること
+
+### 手順
 
 ```bash
+# 1. 依存パッケージをインストール
+npm install
+
+# 2. 開発サーバーを起動
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+起動後、ブラウザで以下のURLを開いてください。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 最初に確認する画面と操作順
 
-To learn more about Next.js, take a look at the following resources:
+起動したら、以下の順番で操作すると一通りの機能を確認できます。
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### ステップ1：ダッシュボード（トップ画面）
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`http://localhost:3000`
 
-## Deploy on Vercel
+7ステップの利用フローが表示されます。「サンプルデータを追加する」ボタンを押すと、KEN ART WORKSのサンプルデータが入り、各機能をすぐに試せます。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### ステップ2：ブランド登録
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`http://localhost:3000/brand`
+
+屋号・コンセプト・活動内容・強み・価格帯などを登録します。保存後、AIマーケティング分析へのリンクが表示されます。
+
+### ステップ3：作品 / ワークショップ登録
+
+`http://localhost:3000/artworks/new`（作品）  
+`http://localhost:3000/workshops/new`（ワークショップ）
+
+作品のジャンル・コンセプト・価格・ターゲットなどを登録します。
+
+### ステップ4：AIマーケティング分析
+
+`http://localhost:3000/analysis`
+
+登録済みのブランド・作品・WSを選んで分析を実行します。認知・集客・販売・リピーター化の4軸でAIが改善提案を生成します。分析後、ペルソナ作成への導線が表示されます。
+
+### ステップ5：ペルソナ作成
+
+`http://localhost:3000/personas/new`
+
+「誰に向けて発信するか」を定義します。マーケティング分析の結果をもとにAIがたたき台を生成します。年齢・悩み・欲しい未来・使用チャネル・刺さる言葉などを設定します。
+
+### ステップ6：コンテンツ生成
+
+`http://localhost:3000/content`
+
+ペルソナをもとに、SNS投稿文・WS告知文・作品販売文・LINE配信文・LP導入文を生成します。生成されたたたき台を編集・保存して使います。
+
+### ステップ7：LP作成支援
+
+`http://localhost:3000/lp`
+
+ランディングページの構成案（9セクション）を生成します。作品販売・WS予約・問い合わせ獲得・LINE登録・認知拡大の5目的から選べます。
+
+### ステップ8：LINE活用支援
+
+`http://localhost:3000/line`
+
+LINE公式アカウントのステップ配信案（8セクション）を生成します。登録特典・ウェルカムメッセージ・配信文1〜3通・CTA文言・配信注意点が出力されます。
+
+### ステップ9：SNS戦略
+
+`http://localhost:3000/sns-strategy`
+
+目的（認知拡大・WS集客・作品販売・LINE登録・ファン化・リピーター化）と媒体（Instagram・X・YouTube等）を選んで、週間投稿プランや投稿テーマ一覧などの戦略案を生成します。
+
+### ステップ10：AIコンサルタント診断
+
+`http://localhost:3000/consultant`
+
+全データを統合して、4フェーズ別の診断と最優先アクションを出力します。「どこから手をつけるべきか」を整理します。
+
+---
+
+## データの保存先
+
+このアプリはデータをブラウザの **localStorage** に保存します。サーバーへの送信・外部APIの呼び出しは行いません。
+
+- ブラウザを閉じてもデータは保持されます
+- 別のブラウザ・別のPCでは共有されません
+- データを削除したい場合は、各画面の削除ボタン、または開発者ツール（Application → Local Storage）から消去できます
+
+---
+
+## 本番公開（Vercel へのデプロイ）
+
+このアプリはNext.jsで構築されており、**Vercel** へそのままデプロイできます。
+
+```bash
+# ビルド確認（エラーがないことを確認）
+npm run build
+```
+
+Vercelへの公開手順：
+1. GitHubリポジトリをVercelに連携する
+2. `app/`（リポジトリルート）を `Root Directory` として指定する（デフォルトで認識される場合はそのままでOK）
+3. `Deploy` を実行する
+
+デプロイ後、発行されたURLをブラウザで開くと、どこからでもアクセスできます。
+
+---
+
+## 技術構成
+
+| 項目 | 内容 |
+|------|------|
+| フレームワーク | Next.js（App Router） |
+| スタイル | Tailwind CSS v4 |
+| 言語 | TypeScript 5 |
+| データ永続化 | localStorage（外部DB・API不使用） |
+| AI生成 | ルールベース（外部AI API不使用） |
+
+---
+
+## 画面一覧
+
+| URL | 画面 |
+|-----|------|
+| `/` | ダッシュボード |
+| `/brand` | ブランド登録・編集 |
+| `/artworks` | 作品一覧 |
+| `/artworks/new` | 作品新規登録 |
+| `/artworks/[id]/edit` | 作品編集 |
+| `/workshops` | ワークショップ一覧 |
+| `/workshops/new` | WS新規登録 |
+| `/workshops/[id]/edit` | WS編集 |
+| `/analysis` | AIマーケティング分析 |
+| `/personas` | ペルソナ一覧 |
+| `/personas/new` | ペルソナ新規作成 |
+| `/personas/[id]/edit` | ペルソナ編集 |
+| `/content` | コンテンツ生成 |
+| `/lp` | LP作成支援 |
+| `/line` | LINE活用支援 |
+| `/sns-strategy` | SNS戦略 |
+| `/consultant` | AIコンサルタント診断 |
