@@ -1,5 +1,38 @@
 # CHANGELOG
 
+## Phase6 完了 — Ver.1公開前チェック・UIスタイル統一・表示バグ修正（2026-07-01）
+
+### Phase6 全体サマリー
+
+| 対応内容 | 詳細 |
+|----------|------|
+| UIスタイル統一 | `consultant/page.tsx`・`sns-strategy/page.tsx` の残存 `gray-` クラスを `slate-` に一括置換 |
+| バージョン表記 | サイドバーの `Ver.1.0.0 — Phase2` → `Ver.1.0` に修正 |
+| 技術用語除去 | 「ルールベースで生成」→「AIが生成した提案」に統一（ユーザー向け文言の自然化） |
+| SNS戦略フェーズ色バグ修正 | `PHASE_COLOR` の集客（acquisition）と販売（sales）の色が他ページと逆になっていたのを修正（集客=緑、販売=アンバー） |
+| SNS戦略ヘッダーバッジ順修正 | バッジが h1 より前に表示されていたのを、他ページと同様の「h1 → バッジ」順に修正 |
+| ペルソナ一覧の表示バグ修正 | `sourceName` と `age` が連結されて「KEN ART WORKS30代」となっていたのを ` · ` 区切りに修正 |
+| 未使用コンポーネント削除 | `content/page.tsx`・`lp/page.tsx`・`line/page.tsx` に定義されていた未使用の `NoDataHint` コンポーネントを削除 |
+| 全ページ動作確認 | 保存・編集・複製・削除・コピー・使用状況変更・関連元表示を全ページで確認 |
+
+### 変更したファイル
+- `components/Sidebar.tsx` — バージョン表記修正（`Ver.1.0.0 — Phase2` → `Ver.1.0`）
+- `app/analysis/page.tsx` — 免責文の「ルールベース」表現をユーザー向け自然表現に修正
+- `components/PersonaForm.tsx` — 免責文・生成ボタンの文言修正
+- `app/consultant/page.tsx` — `gray-` → `slate-` 一括置換
+- `app/sns-strategy/page.tsx` — `gray-` → `slate-` 一括置換、フェーズ色バグ修正、ヘッダーバッジ順修正
+- `app/personas/page.tsx` — `sourceName` と `age` の区切り文字バグ修正
+- `app/content/page.tsx` — 未使用 `NoDataHint` コンポーネント削除
+- `app/lp/page.tsx` — 未使用 `NoDataHint` コンポーネント削除
+- `app/line/page.tsx` — 未使用 `NoDataHint` コンポーネント削除
+
+### 品質確認
+- TypeScript エラーなし（`tsc --noEmit`）
+- Next.js ビルド成功（全17ルート）
+- Ver.1 として使い始められる状態を確認
+
+---
+
 ## Phase5 完了 — 初回利用体験・空データ表示・入力例・サンプルデータ・進行ガイド・画面間導線（2026-06-30）
 
 ### Phase5 全体サマリー
