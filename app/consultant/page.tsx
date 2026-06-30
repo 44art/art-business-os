@@ -636,7 +636,7 @@ export default function ConsultantPage() {
           </div>
 
           {/* 保存 */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-wrap">
             <button
               type="button"
               onClick={handleSave}
@@ -649,6 +649,31 @@ export default function ConsultantPage() {
               <span className="text-xs text-gray-400">保存済み</span>
             )}
           </div>
+
+          {/* 診断後の次のアクション */}
+          {report.status === 'saved' && (
+            <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-4">
+              <p className="text-xs font-semibold text-indigo-800 mb-2">診断完了！次のアクション</p>
+              <p className="text-xs text-indigo-700 mb-3">
+                診断結果の「最優先で改善すべきポイント」と「売上につながりやすい次の一手」からアクションを1つ選んで実行してください。
+                ダッシュボードでは最優先アクションが常時表示されます。
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <a
+                  href="/"
+                  className="text-xs font-medium px-3 py-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                >
+                  ダッシュボードで全体進捗を確認する →
+                </a>
+                <a
+                  href="/content"
+                  className="text-xs font-medium px-3 py-1.5 bg-white text-indigo-700 border border-indigo-300 rounded-lg hover:bg-indigo-50 transition-colors"
+                >
+                  コンテンツ改善へ →
+                </a>
+              </div>
+            </div>
+          )}
         </section>
       )}
 
