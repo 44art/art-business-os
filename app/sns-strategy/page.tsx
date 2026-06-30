@@ -40,8 +40,8 @@ const PLATFORMS: SnsStrategyPlatform[] = ['x', 'instagram', 'facebook', 'youtube
 
 const PHASE_COLOR: Record<string, string> = {
   awareness:   'bg-blue-100 text-blue-800',
-  acquisition: 'bg-yellow-100 text-yellow-800',
-  sales:       'bg-green-100 text-green-800',
+  acquisition: 'bg-green-100 text-green-800',
+  sales:       'bg-amber-100 text-amber-800',
   retention:   'bg-purple-100 text-purple-800',
 }
 
@@ -304,8 +304,8 @@ export default function SnsStrategyPage() {
       {/* ヘッダー */}
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-xs bg-blue-100 text-blue-700 font-semibold px-2 py-0.5 rounded-full">認知・集客</span>
           <h1 className="text-2xl font-bold text-slate-900">SNS戦略</h1>
+          <span className="text-xs bg-blue-100 text-blue-700 font-semibold px-2.5 py-0.5 rounded-full">認知・集客</span>
         </div>
         <p className="text-sm text-slate-500">
           ペルソナ・目的・媒体を選んで、SNS発信の戦略案をAIが生成します。

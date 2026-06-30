@@ -103,8 +103,8 @@ export default function PersonasPage() {
 
                   <p className="text-xs text-slate-400 mb-2">
                     対象：{persona.sourceName}
-                    {persona.age && `${persona.age}　`}
-                    {persona.occupation && persona.occupation}
+                    {persona.age && ` · ${persona.age}`}
+                    {persona.occupation && ` · ${persona.occupation}`}
                   </p>
 
                   {/* ニーズ・欲求のプレビュー */}

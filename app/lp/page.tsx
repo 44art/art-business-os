@@ -671,13 +671,3 @@ function PrerequisiteGate({ hasSources }: { hasSources: boolean }) {
   )
 }
 
-function NoDataHint({ href, label }: { href: string; label: string }) {
-  return (
-    <div className="text-center py-6 border border-dashed border-slate-200 rounded-xl mb-6">
-      <p className="text-sm text-slate-500 mb-2">{label}</p>
-      <a href={href} className="text-sm font-medium text-indigo-600 hover:text-indigo-700 underline">
-        → 作成ページへ
-      </a>
-    </div>
-  )
-}
