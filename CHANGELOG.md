@@ -1,5 +1,62 @@
 # CHANGELOG
 
+## Phase4 完了 — 保存済み提案の管理・再利用性・コピー・使用状況管理（2026-06-30）
+
+### Phase4 全体サマリー
+
+| 機能 | 内容 |
+|------|------|
+| 関連元表示 | LP/LINE/SNS/コンサルタントの保存済み一覧にペルソナ・素材・参照元名をバッジ表示 |
+| セクション別コピー | LP全セクション・LINE全セクション・SNS全セクション・コンサルタント主要項目ごとにコピーボタン追加 |
+| 全文コピー | LP案の全セクション＋LINE誘導文を1クリックで一括コピー |
+| コピー成功表示 | 押すと「コピー済 ✓」に2秒変化、元に戻る |
+| 使用状況管理 | 未使用/使用予定/使用済み/修正中バッジを全5ページに追加（クリックでサイクル変更、localStorage即時保存） |
+| 旧データ互換 | `usageStatus` は optional、未設定データは「未使用」として自動処理 |
+| 複製リセット | 複製時は使用状況を「未使用」にリセット |
+| 再編集 | 全5ページで保存済みから再編集が可能（SNSは本フェーズで実装） |
+| 複製 | 全5ページで保存済みから複製が可能 |
+| 導線強化 | コンサルタント展開ビューに「今すぐ使える導線（activeFlows）」を追加 |
+
+### 追加したファイル
+- `components/CopyButton.tsx` — 共有コピーボタン（コピー成功フィードバック付き）
+- `components/UsageStatusBadge.tsx` — 共有使用状況バッジ（クリックでサイクル変更）
+
+### 型定義の拡張（`types/index.ts`）
+- `UsageStatus` 型を追加（`'unused' | 'planned' | 'used' | 'revising'`）
+- `ContentDraft`, `LandingPageDraft`, `LineStrategyDraft`, `SnsStrategyDraft`, `ConsultantReport` に `usageStatus?: UsageStatus` を追加
+
+---
+
+## Phase4-D — 全体確認・修正（2026-06-30）
+
+### 修正内容
+- `app/content/page.tsx` — インラインコピーを共有 `CopyButton` に統合、ハッシュタグも含めてコピー
+- `app/lp/page.tsx` — 「全文コピー」ボタンを追加（全セクション＋LINE誘導文を一括コピー）
+- `app/sns-strategy/page.tsx` — 主要CTA（primaryCta）にコピーボタンを追加
+- `app/consultant/page.tsx` — 「今すぐ使える導線（activeFlows）」を展開ビューに追加・コピー対応
+
+---
+
+## Phase4-C — コピー・出力・使用済み管理の改善（2026-06-30）
+
+### 型定義（`types/index.ts`）
+- `UsageStatus` 型追加（`'unused' | 'planned' | 'used' | 'revising'`）
+- 全5ドラフト型に `usageStatus?: UsageStatus` を追加（後方互換）
+
+### 共有コンポーネント
+- `components/CopyButton.tsx` — 共有コピーボタン（2秒フィードバック）
+- `components/UsageStatusBadge.tsx` — 共有使用状況バッジ（クリックで4段階サイクル）
+
+### 各ページの改善
+- **コンテンツ** — 使用状況バッジを一覧に追加
+- **LP案** — セクション別コピーボタン・LINE誘導文コピー・使用状況バッジを追加
+- **LINE活用案** — セクション別コピーボタン・SNS誘導文コピー・使用状況バッジを追加
+- **SNS戦略案** — セクション別コピーボタン・使用状況バッジを追加
+- **AIコンサルタント** — 最優先改善ポイント・次の一手・コンテンツ案にコピーボタン・使用状況バッジを追加
+- 複製時は `usageStatus: 'unused'` にリセット
+
+---
+
 ## Phase4-B — 保存済み提案の管理・再利用性改善（2026-06-30）
 
 ### コンテンツ生成 (`app/content/page.tsx`)
