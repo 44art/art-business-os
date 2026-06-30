@@ -317,6 +317,26 @@ export default function DashboardPage() {
   const donePhaseCount = phases.filter((p) => p.status === 'done').length
   const progressPct = Math.round((donePhaseCount / 4) * 100)
 
+  // 7ステップ進行状況
+  const steps = [
+    { n: 1, label: 'ブランド登録',   href: '/brand',        done: !!data.brand,
+      desc: 'AI生成の軸となるブランド情報を登録' },
+    { n: 2, label: '作品/WS登録',    href: '/artworks/new', done: data.artworks.length > 0 || data.workshops.length > 0,
+      desc: '販売中の作品やWSをAI分析の素材として登録' },
+    { n: 3, label: 'AI分析',         href: '/analysis',     done: data.personas.length > 0,
+      desc: '認知〜販売の課題と改善施策をAIが分析' },
+    { n: 4, label: 'ペルソナ作成',   href: '/personas/new', done: data.personas.length > 0,
+      desc: 'ターゲット顧客像を定義してコンテンツ精度を上げる' },
+    { n: 5, label: 'コンテンツ作成', href: '/content',      done: data.contentDrafts.length > 0,
+      desc: 'SNS投稿・WS告知・作品紹介をAIが生成' },
+    { n: 6, label: 'LP/LINE/SNS',   href: '/lp',            done: data.lpDrafts.length > 0 || data.lineDrafts.length > 0 || data.snsDrafts.length > 0,
+      desc: '集客から購入・リピートまでの導線を整備' },
+    { n: 7, label: 'AI診断',         href: '/consultant',   done: data.consultantReports.length > 0,
+      desc: '全導線を診断して最優先アクションを把握' },
+  ]
+  const stepsDone = steps.filter((s) => s.done).length
+  const nextStep = steps.find((s) => !s.done) ?? null
+
   return (
     <div className="max-w-4xl mx-auto space-y-6">
 
@@ -395,51 +415,100 @@ export default function DashboardPage() {
         </div>
       )}
 
+      {/* ─── 7ステップ進行状況（データあり） ─────────── */}
+      {isStarted && (
+        <div className="bg-white rounded-xl border border-slate-200 p-4">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs font-semibold text-slate-600">セットアップ進行状況</p>
+            <p className="text-xs text-slate-400">{stepsDone}/7ステップ完了</p>
+          </div>
+          <div className="flex items-center gap-1 flex-wrap">
+            {steps.map((step, i) => (
+              <span key={step.n} className="flex items-center gap-1">
+                <Link
+                  href={step.href}
+                  title={step.desc}
+                  className={`flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-colors ${
+                    step.done
+                      ? 'bg-green-100 text-green-700'
+                      : step === nextStep
+                      ? 'bg-indigo-600 text-white shadow-sm ring-2 ring-indigo-200'
+                      : 'bg-slate-100 text-slate-400 hover:bg-slate-200'
+                  }`}
+                >
+                  {step.done ? '✓' : step.n}
+                </Link>
+                {i < steps.length - 1 && (
+                  <span className="flex-shrink-0 text-slate-200 text-xs">—</span>
+                )}
+              </span>
+            ))}
+          </div>
+          {nextStep && (
+            <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-xs text-slate-400">次のおすすめアクション</p>
+                <p className="text-sm font-semibold text-indigo-700">STEP {nextStep.n}：{nextStep.label}</p>
+                <p className="text-xs text-slate-500 truncate">{nextStep.desc}</p>
+              </div>
+              <Link
+                href={nextStep.href}
+                className="flex-shrink-0 text-xs font-medium px-3 py-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+              >
+                進む →
+              </Link>
+            </div>
+          )}
+          {!nextStep && (
+            <p className="mt-3 pt-3 border-t border-slate-100 text-xs text-green-600 font-medium text-center">
+              全7ステップ完了！AIコンサルタント診断を定期的に更新してください
+            </p>
+          )}
+        </div>
+      )}
+
+      {sampleMsg && (
+        <div className="bg-green-50 border border-green-200 rounded-xl px-4 py-3 text-sm text-green-700">
+          {sampleMsg}
+        </div>
+      )}
+
       {/* ─── 初回スタートガイド ───────────────────────── */}
       {!isStarted && (
         <div className="bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-200 rounded-xl p-6">
-          <p className="text-base font-bold text-indigo-900 mb-1">はじめての方へ：マーケ導線を最短3ステップで作れます</p>
-          <p className="text-xs text-indigo-700 mb-5">
-            このシステムは「認知 → 集客 → 販売 → リピーター化」の全フェーズをAIがサポートします。
-            まず素材を登録するだけで始められます。
+          <p className="text-base font-bold text-indigo-900 mb-1">はじめての方へ：7ステップでマーケ導線を完成させます</p>
+          <p className="text-xs text-indigo-700 mb-4">
+            認知 → 集客 → 販売 → リピーター化の流れをAIがサポート。ステップ1から順に進めてください。
           </p>
-          <div className="grid gap-3">
-            <div className="bg-white rounded-xl border border-indigo-200 p-4">
-              <div className="flex items-start gap-3">
-                <span className="w-7 h-7 bg-indigo-600 text-white text-xs font-bold rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
-                <div className="flex-1">
-                  <p className="font-semibold text-sm text-indigo-900 mb-1">素材を登録する</p>
-                  <p className="text-xs text-slate-500 mb-2">ブランドコンセプト・作品・WSを登録するとAIの分析素材になります</p>
-                  <div className="flex flex-wrap gap-2">
-                    <Link href="/brand" className="text-xs font-medium text-indigo-700 underline hover:text-indigo-900">ブランドを登録 →</Link>
-                    <Link href="/artworks/new" className="text-xs font-medium text-indigo-700 underline hover:text-indigo-900">作品を登録 →</Link>
-                    <Link href="/workshops/new" className="text-xs font-medium text-indigo-700 underline hover:text-indigo-900">WSを登録 →</Link>
-                  </div>
+          <div className="space-y-2">
+            {steps.map((step, i) => (
+              <div
+                key={step.n}
+                className={`flex items-center gap-3 p-3 rounded-xl ${
+                  i === 0 ? 'bg-white border border-indigo-300 shadow-sm' : 'bg-white/50'
+                }`}
+              >
+                <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
+                  i === 0 ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-400'
+                }`}>
+                  {step.n}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <p className={`text-sm font-semibold ${i === 0 ? 'text-indigo-900' : 'text-slate-400'}`}>
+                    {step.label}
+                  </p>
+                  <p className="text-xs text-slate-400 truncate">{step.desc}</p>
                 </div>
+                {i === 0 && (
+                  <Link
+                    href={step.href}
+                    className="flex-shrink-0 text-xs font-medium text-white bg-indigo-600 px-3 py-1.5 rounded-lg hover:bg-indigo-700 transition-colors"
+                  >
+                    始める →
+                  </Link>
+                )}
               </div>
-            </div>
-            <div className="bg-white rounded-xl border border-slate-200 p-4">
-              <div className="flex items-start gap-3">
-                <span className="w-7 h-7 bg-slate-300 text-white text-xs font-bold rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
-                <div className="flex-1">
-                  <p className="font-semibold text-sm text-slate-600 mb-1">AI分析でペルソナを作成する</p>
-                  <p className="text-xs text-slate-400 mb-2">AIマーケティング分析で課題を把握し、ターゲット顧客像（ペルソナ）を定義します</p>
-                  <div className="flex flex-wrap gap-2">
-                    <Link href="/analysis" className="text-xs font-medium text-slate-500 underline hover:text-slate-700">AI分析へ →</Link>
-                    <Link href="/personas/new" className="text-xs font-medium text-slate-500 underline hover:text-slate-700">ペルソナ作成 →</Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white rounded-xl border border-slate-200 p-4 opacity-60">
-              <div className="flex items-start gap-3">
-                <span className="w-7 h-7 bg-slate-200 text-slate-400 text-xs font-bold rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
-                <div>
-                  <p className="font-semibold text-sm text-slate-400 mb-1">コンテンツ・LP・LINE・SNS戦略を生成する</p>
-                  <p className="text-xs text-slate-400">ペルソナを作成すると、全マーケ施策のたたき台をAIが生成できるようになります</p>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
 
           {/* サンプルデータ */}
@@ -452,19 +521,10 @@ export default function DashboardPage() {
             >
               サンプルデータ（スニーカーペイント・箔画）を追加する
             </button>
-            {sampleMsg && (
-              <p className="mt-2 text-xs text-green-700 text-center">{sampleMsg}</p>
-            )}
             <p className="mt-1.5 text-xs text-indigo-500 text-center">
               既存データは上書きされません。追加後はすぐにAI機能を試せます。
             </p>
           </div>
-        </div>
-      )}
-
-      {sampleMsg && isStarted && (
-        <div className="bg-green-50 border border-green-200 rounded-xl px-4 py-3 text-sm text-green-700">
-          {sampleMsg}
         </div>
       )}
 

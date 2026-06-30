@@ -110,6 +110,32 @@ export default function AnalysisPage() {
         </p>
       </div>
 
+      {/* この画面の役割 */}
+      {!brand && artworks.length === 0 && workshops.length === 0 && (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-5">
+          <p className="text-sm font-semibold text-amber-900 mb-1">まず素材を登録してください</p>
+          <p className="text-xs text-amber-700 mb-3">
+            AI分析を行うには、分析対象となるブランド・作品・WSのいずれかが必要です。
+            登録後にこの画面に戻ってくると、AI分析を実行できます。
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <a href="/brand" className="text-xs font-medium px-3 py-1.5 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">ブランドを登録 →</a>
+            <a href="/artworks/new" className="text-xs font-medium px-3 py-1.5 bg-white text-amber-700 border border-amber-300 rounded-lg hover:bg-amber-50 transition-colors">作品を登録 →</a>
+            <a href="/workshops/new" className="text-xs font-medium px-3 py-1.5 bg-white text-amber-700 border border-amber-300 rounded-lg hover:bg-amber-50 transition-colors">WSを登録 →</a>
+          </div>
+        </div>
+      )}
+      {(brand || artworks.length > 0 || workshops.length > 0) && !result && (
+        <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-4 mb-5">
+          <p className="text-xs font-semibold text-indigo-800 mb-1">この画面でできること</p>
+          <p className="text-xs text-indigo-700">
+            ブランド・作品・WSのうち分析したいものを選んで「分析する」を押すと、
+            認知・集客・販売・リピーターの4軸で<strong>課題と改善施策</strong>をAIが整理します。
+            分析結果はペルソナ作成の参考として使えます。
+          </p>
+        </div>
+      )}
+
       {/* ─── ステップ1：分析対象の選択 ─── */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-5">
         <div className="flex items-center gap-2 mb-4">

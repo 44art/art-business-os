@@ -804,6 +804,22 @@ export default function SnsStrategyPage() {
           </div>
         </section>
       )}
+
+      {/* 次のステップ */}
+      {snsDrafts.length > 0 && (
+        <div className="mt-4 bg-purple-50 border border-purple-200 rounded-xl p-5">
+          <p className="text-sm font-semibold text-purple-900 mb-1">次のステップ：AIコンサルタント診断</p>
+          <p className="text-xs text-purple-700 mb-3">
+            SNS戦略まで作成できました。AIコンサルタントに全導線を診断してもらい、最優先の改善アクションを確認しましょう。
+          </p>
+          <a
+            href="/consultant"
+            className="inline-block text-xs font-medium px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+          >
+            AIコンサルタント診断へ →
+          </a>
+        </div>
+      )}
     </div>
   )
 }
