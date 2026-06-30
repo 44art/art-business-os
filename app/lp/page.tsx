@@ -229,6 +229,10 @@ export default function LpPage() {
         <p className="text-sm text-slate-500">
           ペルソナとLP目的を選ぶと、9セクションのLP構成案と本文たたき台を生成します
         </p>
+        <div className="mt-3 bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-xs text-slate-600 space-y-1">
+          <p><span className="font-semibold">LP目的の選び方：</span>「作品販売」「WS予約」「LINE登録」など、このLPで訪問者にしてほしいアクションを選びます。</p>
+          <p><span className="font-semibold">9セクションの見方：</span>ヒーロー → 共感 → 解決策 → 証拠 → 行動 の流れで構成されています。上から順に読んで全体の流れを確認し、自分の言葉に書き換えてください。</p>
+        </div>
       </div>
 
       {/* ─── 選択パネル ─── */}

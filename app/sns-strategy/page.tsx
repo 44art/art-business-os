@@ -311,6 +311,10 @@ export default function SnsStrategyPage() {
           ペルソナ・目的・媒体を選んで、SNS発信の戦略案をAIが生成します。
           コンテンツ案・LP案・LINE戦略を参照することでより具体的な戦略を作成できます。
         </p>
+        <div className="mt-3 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-xs text-gray-600 space-y-1">
+          <p><span className="font-semibold">目的の選び方：</span>「認知拡大」はフォロワー増加、「WS集客」は申込増加、「作品販売」は購入促進など、今一番伸ばしたいゴールを選びます。</p>
+          <p><span className="font-semibold">生成結果の使い方：</span>投稿テーマ・コンテンツアイデア・ハッシュタグ・投稿文サンプルが生成されます。投稿文はたたき台なので自分の口調・言葉にアレンジして使ってください。</p>
+        </div>
       </div>
 
       {/* STEP 1: ペルソナ選択 */}

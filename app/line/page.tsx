@@ -251,6 +251,10 @@ export default function LinePage() {
         <p className="text-sm text-slate-500">
           ペルソナとLINE目的を選ぶと、登録導線・特典・あいさつ・ステップ配信案を生成します
         </p>
+        <div className="mt-3 bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-xs text-slate-600 space-y-1">
+          <p><span className="font-semibold">LINE目的の選び方：</span>「WS予約につなげたい」「作品購入につなげたい」「リピーター化したい」など、LINEで何をしたいかで選びます。</p>
+          <p><span className="font-semibold">生成される内容：</span>登録導線文・特典案・あいさつメッセージ・ステップ配信3通・SNS誘導文の一式が生成されます。LINE公式アカウントの各設定にペーストして使えます。</p>
+        </div>
       </div>
 
       {/* ─── 選択パネル ─── */}

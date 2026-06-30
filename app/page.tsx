@@ -24,6 +24,7 @@ import {
   getSnsDrafts,
   getConsultantReports,
 } from '@/lib/storage'
+import { loadSampleData } from '@/lib/sampleData'
 
 // ─── 型 ──────────────────────────────────────────────────
 
@@ -268,8 +269,9 @@ function StatusIcon({ status }: { status: PhaseStatus }) {
 
 export default function DashboardPage() {
   const [data, setData] = useState<DashboardData | null>(null)
+  const [sampleMsg, setSampleMsg] = useState('')
 
-  useEffect(() => {
+  function reloadData() {
     setData({
       brand: getBrand(),
       artworks: getArtworks(),
@@ -281,7 +283,25 @@ export default function DashboardPage() {
       snsDrafts: getSnsDrafts(),
       consultantReports: getConsultantReports(),
     })
-  }, [])
+  }
+
+  useEffect(() => { reloadData() }, [])
+
+  function handleLoadSample() {
+    const result = loadSampleData()
+    reloadData()
+    const parts: string[] = []
+    if (result.brandAdded) parts.push('ブランド')
+    if (result.artworksAdded > 0) parts.push(`作品${result.artworksAdded}件`)
+    if (result.workshopsAdded > 0) parts.push(`WS${result.workshopsAdded}件`)
+    if (result.personasAdded > 0) parts.push(`ペルソナ${result.personasAdded}件`)
+    if (parts.length > 0) {
+      setSampleMsg(`${parts.join('・')}を追加しました`)
+    } else {
+      setSampleMsg('既にデータが登録されているためスキップしました')
+    }
+    setTimeout(() => setSampleMsg(''), 4000)
+  }
 
   if (!data) return null
 
@@ -421,6 +441,30 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
+
+          {/* サンプルデータ */}
+          <div className="mt-4 pt-4 border-t border-indigo-100">
+            <p className="text-xs text-indigo-600 mb-2 font-medium">まず動作を試してみたい方へ</p>
+            <button
+              type="button"
+              onClick={handleLoadSample}
+              className="w-full py-2.5 text-sm font-medium text-indigo-700 bg-white border border-indigo-300 rounded-xl hover:bg-indigo-50 transition-colors"
+            >
+              サンプルデータ（スニーカーペイント・箔画）を追加する
+            </button>
+            {sampleMsg && (
+              <p className="mt-2 text-xs text-green-700 text-center">{sampleMsg}</p>
+            )}
+            <p className="mt-1.5 text-xs text-indigo-500 text-center">
+              既存データは上書きされません。追加後はすぐにAI機能を試せます。
+            </p>
+          </div>
+        </div>
+      )}
+
+      {sampleMsg && isStarted && (
+        <div className="bg-green-50 border border-green-200 rounded-xl px-4 py-3 text-sm text-green-700">
+          {sampleMsg}
         </div>
       )}
 

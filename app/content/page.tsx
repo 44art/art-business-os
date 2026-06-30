@@ -184,6 +184,10 @@ export default function ContentPage() {
         <p className="text-sm text-slate-500">
           ペルソナを選んでコンテンツ種別を選択すると、文章のたたき台を生成します。編集して保存してください。
         </p>
+        <div className="mt-3 bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-xs text-slate-600 space-y-1">
+          <p><span className="font-semibold">ペルソナの選び方：</span>誰に向けた文章を作るかを決めます。ペルソナが変わると、悩みへのアプローチや言葉遣いが変わります。</p>
+          <p><span className="font-semibold">コンテンツ種別の選び方：</span>最初は「SNS投稿（認知）」から試すのがおすすめ。生成後に自分の言葉にアレンジして投稿に使えます。</p>
+        </div>
       </div>
 
       {/* ─── 生成フォーム ─── */}
