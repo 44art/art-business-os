@@ -216,7 +216,7 @@ export default function AnalysisPage() {
             <div>
               <p className="text-sm font-medium text-amber-800">AIの提案です。最終判断は必ず人間が行ってください。</p>
               <p className="text-xs text-amber-700 mt-0.5">
-                以下の分析・施策はルールベースで生成したものです。あなたの状況・優先度・リソースに応じて取捨選択してください。
+                以下の分析・施策はAIが生成した提案です。あなたの状況・優先度・リソースに応じて取捨選択してください。
               </p>
             </div>
           </div>

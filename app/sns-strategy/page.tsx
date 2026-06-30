@@ -305,21 +305,21 @@ export default function SnsStrategyPage() {
       <div>
         <div className="flex items-center gap-2 mb-1">
           <span className="text-xs bg-blue-100 text-blue-700 font-semibold px-2 py-0.5 rounded-full">認知・集客</span>
-          <h1 className="text-2xl font-bold text-gray-900">SNS戦略</h1>
+          <h1 className="text-2xl font-bold text-slate-900">SNS戦略</h1>
         </div>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-slate-500">
           ペルソナ・目的・媒体を選んで、SNS発信の戦略案をAIが生成します。
           コンテンツ案・LP案・LINE戦略を参照することでより具体的な戦略を作成できます。
         </p>
-        <div className="mt-3 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-xs text-gray-600 space-y-1">
+        <div className="mt-3 bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-xs text-slate-600 space-y-1">
           <p><span className="font-semibold">目的の選び方：</span>「認知拡大」はフォロワー増加、「WS集客」は申込増加、「作品販売」は購入促進など、今一番伸ばしたいゴールを選びます。</p>
           <p><span className="font-semibold">生成結果の使い方：</span>投稿テーマ・コンテンツアイデア・ハッシュタグ・投稿文サンプルが生成されます。投稿文はたたき台なので自分の口調・言葉にアレンジして使ってください。</p>
         </div>
       </div>
 
       {/* STEP 1: ペルソナ選択 */}
-      <section className="bg-white rounded-xl border border-gray-200 p-5">
-        <h2 className="font-semibold text-gray-800 mb-3">STEP 1 ペルソナを選択</h2>
+      <section className="bg-white rounded-xl border border-slate-200 p-5">
+        <h2 className="font-semibold text-slate-800 mb-3">STEP 1 ペルソナを選択</h2>
         {personas.length === 0 ? (
           <SnsPrerequisiteGate hasSources={!!(brand || artworks.length > 0 || workshops.length > 0)} />
         ) : (
@@ -330,7 +330,7 @@ export default function SnsStrategyPage() {
                 className={`border rounded-lg cursor-pointer transition-colors ${
                   selectedPersonaId === p.id
                     ? 'border-blue-500 bg-blue-50'
-                    : 'border-gray-200 hover:border-blue-300'
+                    : 'border-slate-200 hover:border-blue-300'
                 }`}
               >
                 <div
@@ -344,11 +344,11 @@ export default function SnsStrategyPage() {
                 >
                   <div className="flex items-center gap-2">
                     <span className={`w-4 h-4 rounded-full border-2 flex-shrink-0 ${
-                      selectedPersonaId === p.id ? 'border-blue-500 bg-blue-500' : 'border-gray-400'
+                      selectedPersonaId === p.id ? 'border-blue-500 bg-blue-500' : 'border-slate-400'
                     }`} />
                     <div>
-                      <p className="font-medium text-sm text-gray-900">{p.name}</p>
-                      <p className="text-xs text-gray-500">{p.age} · {p.occupation} · {sourceLabel(p.sourceType)}: {p.sourceName}</p>
+                      <p className="font-medium text-sm text-slate-900">{p.name}</p>
+                      <p className="text-xs text-slate-500">{p.age} · {p.occupation} · {sourceLabel(p.sourceType)}: {p.sourceName}</p>
                     </div>
                   </div>
                   <button
@@ -357,27 +357,27 @@ export default function SnsStrategyPage() {
                       e.stopPropagation()
                       setExpandedPersonaId(expandedPersonaId === p.id ? '' : p.id)
                     }}
-                    className="text-xs text-gray-400 hover:text-gray-600 px-2"
+                    className="text-xs text-slate-400 hover:text-slate-600 px-2"
                   >
                     {expandedPersonaId === p.id ? '▲ 閉じる' : '▼ 詳細'}
                   </button>
                 </div>
                 {expandedPersonaId === p.id && (
-                  <div className="px-4 pb-3 border-t border-gray-100 mt-1 space-y-2">
+                  <div className="px-4 pb-3 border-t border-slate-100 mt-1 space-y-2">
                     <div>
-                      <p className="text-xs font-medium text-gray-600 mt-2">悩み</p>
-                      <ul className="text-xs text-gray-600 list-disc list-inside">{p.pains.map((x, i) => <li key={i}>{x}</li>)}</ul>
+                      <p className="text-xs font-medium text-slate-600 mt-2">悩み</p>
+                      <ul className="text-xs text-slate-600 list-disc list-inside">{p.pains.map((x, i) => <li key={i}>{x}</li>)}</ul>
                     </div>
                     <div>
-                      <p className="text-xs font-medium text-gray-600">理想・欲求</p>
-                      <ul className="text-xs text-gray-600 list-disc list-inside">{p.desires.map((x, i) => <li key={i}>{x}</li>)}</ul>
+                      <p className="text-xs font-medium text-slate-600">理想・欲求</p>
+                      <ul className="text-xs text-slate-600 list-disc list-inside">{p.desires.map((x, i) => <li key={i}>{x}</li>)}</ul>
                     </div>
                     <div>
-                      <p className="text-xs font-medium text-gray-600">刺さる言葉</p>
-                      <div className="flex flex-wrap gap-1">{p.resonantPhrases.map((x, i) => <span key={i} className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full">{x}</span>)}</div>
+                      <p className="text-xs font-medium text-slate-600">刺さる言葉</p>
+                      <div className="flex flex-wrap gap-1">{p.resonantPhrases.map((x, i) => <span key={i} className="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full">{x}</span>)}</div>
                     </div>
                     <div>
-                      <p className="text-xs font-medium text-gray-600">よく使うチャネル</p>
+                      <p className="text-xs font-medium text-slate-600">よく使うチャネル</p>
                       <div className="flex flex-wrap gap-1">{p.usedChannels.map((x, i) => <span key={i} className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">{x}</span>)}</div>
                     </div>
                   </div>
@@ -390,19 +390,19 @@ export default function SnsStrategyPage() {
 
       {/* STEP 2: 参照データ（任意） */}
       {selectedPersona && (
-        <section className="bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="font-semibold text-gray-800 mb-1">STEP 2 参照データを選択（任意）</h2>
-          <p className="text-xs text-gray-400 mb-3">
+        <section className="bg-white rounded-xl border border-slate-200 p-5">
+          <h2 className="font-semibold text-slate-800 mb-1">STEP 2 参照データを選択（任意）</h2>
+          <p className="text-xs text-slate-400 mb-3">
             コンテンツ案・LP案・LINE戦略を選ぶと、SNS戦略の内容がより具体的になります
           </p>
 
           {/* コンテンツ参照 */}
           <div className="mb-3">
-            <label className="text-xs font-medium text-gray-600 block mb-1">コンテンツ案を参照（任意）</label>
+            <label className="text-xs font-medium text-slate-600 block mb-1">コンテンツ案を参照（任意）</label>
             <select
               value={selectedContentId}
               onChange={(e) => setSelectedContentId(e.target.value)}
-              className="w-full border border-gray-200 rounded-md text-sm px-3 py-2 text-gray-700 bg-white"
+              className="w-full border border-slate-200 rounded-md text-sm px-3 py-2 text-slate-700 bg-white"
             >
               <option value="">参照しない</option>
               {filteredContentDrafts.map((c) => (
@@ -415,11 +415,11 @@ export default function SnsStrategyPage() {
 
           {/* LP参照 */}
           <div className="mb-3">
-            <label className="text-xs font-medium text-gray-600 block mb-1">LP案を参照（任意）</label>
+            <label className="text-xs font-medium text-slate-600 block mb-1">LP案を参照（任意）</label>
             <select
               value={selectedLpId}
               onChange={(e) => setSelectedLpId(e.target.value)}
-              className="w-full border border-gray-200 rounded-md text-sm px-3 py-2 text-gray-700 bg-white"
+              className="w-full border border-slate-200 rounded-md text-sm px-3 py-2 text-slate-700 bg-white"
             >
               <option value="">参照しない</option>
               {filteredLpDrafts.map((l) => (
@@ -437,11 +437,11 @@ export default function SnsStrategyPage() {
 
           {/* LINE戦略参照 */}
           <div>
-            <label className="text-xs font-medium text-gray-600 block mb-1">LINE戦略案を参照（任意）</label>
+            <label className="text-xs font-medium text-slate-600 block mb-1">LINE戦略案を参照（任意）</label>
             <select
               value={selectedLineId}
               onChange={(e) => setSelectedLineId(e.target.value)}
-              className="w-full border border-gray-200 rounded-md text-sm px-3 py-2 text-gray-700 bg-white"
+              className="w-full border border-slate-200 rounded-md text-sm px-3 py-2 text-slate-700 bg-white"
             >
               <option value="">参照しない</option>
               {filteredLineDrafts.map((l) => (
@@ -465,8 +465,8 @@ export default function SnsStrategyPage() {
 
       {/* STEP 3: SNS目的選択 */}
       {selectedPersona && (
-        <section className="bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="font-semibold text-gray-800 mb-3">STEP 3 SNS目的を選択</h2>
+        <section className="bg-white rounded-xl border border-slate-200 p-5">
+          <h2 className="font-semibold text-slate-800 mb-3">STEP 3 SNS目的を選択</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {GOALS.map((goal) => {
               const cfg = SNS_GOAL_CONFIG[goal]
@@ -478,10 +478,10 @@ export default function SnsStrategyPage() {
                   className={`p-3 rounded-lg border text-left transition-colors ${
                     selectedGoal === goal
                       ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-blue-300'
+                      : 'border-slate-200 hover:border-blue-300'
                   }`}
                 >
-                  <p className="font-medium text-sm text-gray-900">{cfg.label}</p>
+                  <p className="font-medium text-sm text-slate-900">{cfg.label}</p>
                   <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${PHASE_COLOR[cfg.phase]}`}>
                     {PHASE_LABEL[cfg.phase]}
                   </span>
@@ -494,9 +494,9 @@ export default function SnsStrategyPage() {
 
       {/* STEP 4: 媒体選択（複数可） */}
       {selectedPersona && (
-        <section className="bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="font-semibold text-gray-800 mb-1">STEP 4 使用するSNS媒体を選択（複数可）</h2>
-          <p className="text-xs text-gray-400 mb-3">
+        <section className="bg-white rounded-xl border border-slate-200 p-5">
+          <h2 className="font-semibold text-slate-800 mb-1">STEP 4 使用するSNS媒体を選択（複数可）</h2>
+          <p className="text-xs text-slate-400 mb-3">
             ペルソナがよく使うチャネル:
             <span className="text-blue-600 font-medium ml-1">{selectedPersona.usedChannels.join('・')}</span>
           </p>
@@ -512,18 +512,18 @@ export default function SnsStrategyPage() {
                   className={`p-3 rounded-lg border text-left transition-colors ${
                     isSelected
                       ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-blue-300'
+                      : 'border-slate-200 hover:border-blue-300'
                   }`}
                 >
                   <div className="flex items-center gap-2">
                     <span className={`w-4 h-4 rounded border-2 flex-shrink-0 flex items-center justify-center ${
-                      isSelected ? 'border-blue-500 bg-blue-500' : 'border-gray-400'
+                      isSelected ? 'border-blue-500 bg-blue-500' : 'border-slate-400'
                     }`}>
                       {isSelected && <span className="text-white text-xs leading-none">✓</span>}
                     </span>
-                    <p className="font-medium text-sm text-gray-900">{cfg.label}</p>
+                    <p className="font-medium text-sm text-slate-900">{cfg.label}</p>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1 ml-6">{cfg.primaryUse}</p>
+                  <p className="text-xs text-slate-500 mt-1 ml-6">{cfg.primaryUse}</p>
                 </button>
               )
             })}
@@ -562,13 +562,13 @@ export default function SnsStrategyPage() {
           <div className="bg-white rounded-xl border border-blue-200 p-5">
             <div className="flex items-start justify-between mb-3">
               <div>
-                <h2 className="font-bold text-gray-900 text-lg">SNS戦略案</h2>
+                <h2 className="font-bold text-slate-900 text-lg">SNS戦略案</h2>
                 <div className="flex flex-wrap gap-1 mt-1">
                   <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-medium">
                     {generated.goalLabel}
                   </span>
                   {generated.platforms.map((p) => (
-                    <span key={p} className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full">
+                    <span key={p} className="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full">
                       {SNS_PLATFORM_CONFIG[p].label}
                     </span>
                   ))}
@@ -577,21 +577,21 @@ export default function SnsStrategyPage() {
                   </span>
                 </div>
               </div>
-              <div className="text-right text-xs text-gray-400">
-                <p>週間投稿目安: <span className="font-semibold text-gray-700">{generated.weeklyPostCount}件</span></p>
-                <p className="mt-0.5">主要CTA: <span className="text-gray-700">{generated.primaryCta}</span></p>
+              <div className="text-right text-xs text-slate-400">
+                <p>週間投稿目安: <span className="font-semibold text-slate-700">{generated.weeklyPostCount}件</span></p>
+                <p className="mt-0.5">主要CTA: <span className="text-slate-700">{generated.primaryCta}</span></p>
               </div>
             </div>
 
             {/* コンテキスト */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4 text-xs">
-              <div className="bg-gray-50 rounded p-2">
-                <p className="text-gray-400 mb-0.5">ペルソナ</p>
-                <p className="font-medium text-gray-700">{generated.personaName}</p>
+              <div className="bg-slate-50 rounded p-2">
+                <p className="text-slate-400 mb-0.5">ペルソナ</p>
+                <p className="font-medium text-slate-700">{generated.personaName}</p>
               </div>
-              <div className="bg-gray-50 rounded p-2">
-                <p className="text-gray-400 mb-0.5">素材</p>
-                <p className="font-medium text-gray-700">{sourceLabel(generated.sourceType)}: {generated.sourceName}</p>
+              <div className="bg-slate-50 rounded p-2">
+                <p className="text-slate-400 mb-0.5">素材</p>
+                <p className="font-medium text-slate-700">{sourceLabel(generated.sourceType)}: {generated.sourceName}</p>
               </div>
               {generated.referencedLineId && (
                 <div className="bg-green-50 rounded p-2">
@@ -620,25 +620,25 @@ export default function SnsStrategyPage() {
             {/* 8セクション */}
             <div className="space-y-3">
               {generated.sections.map((section) => (
-                <div key={section.key} className="border border-gray-200 rounded-lg overflow-hidden">
+                <div key={section.key} className="border border-slate-200 rounded-lg overflow-hidden">
                   <button
                     type="button"
                     onClick={() =>
                       setExpandedSections((prev) => ({ ...prev, [section.key]: !prev[section.key] }))
                     }
-                    className="w-full flex items-center justify-between px-4 py-2.5 bg-gray-50 hover:bg-gray-100 text-left"
+                    className="w-full flex items-center justify-between px-4 py-2.5 bg-slate-50 hover:bg-slate-100 text-left"
                   >
-                    <span className="font-medium text-sm text-gray-800">{section.label}</span>
-                    <span className="text-gray-400 text-xs">{expandedSections[section.key] ? '▲' : '▼'}</span>
+                    <span className="font-medium text-sm text-slate-800">{section.label}</span>
+                    <span className="text-slate-400 text-xs">{expandedSections[section.key] ? '▲' : '▼'}</span>
                   </button>
                   {expandedSections[section.key] && (
                     <div className="p-3 space-y-2">
-                      <p className="text-xs text-gray-400">{section.hint}</p>
+                      <p className="text-xs text-slate-400">{section.hint}</p>
                       <textarea
                         value={section.content}
                         onChange={(e) => updateSection(section.key, e.target.value)}
                         rows={section.content.split('\n').length + 2}
-                        className="w-full border border-gray-200 rounded-md text-xs px-3 py-2 text-gray-800 font-mono leading-relaxed resize-y focus:outline-none focus:ring-1 focus:ring-blue-300"
+                        className="w-full border border-slate-200 rounded-md text-xs px-3 py-2 text-slate-800 font-mono leading-relaxed resize-y focus:outline-none focus:ring-1 focus:ring-blue-300"
                       />
                     </div>
                   )}
@@ -678,7 +678,7 @@ export default function SnsStrategyPage() {
                 <span className="text-sm text-green-600 font-medium">{savedMsg}</span>
               )}
               {generated.status === 'saved' && !savedMsg && (
-                <span className="text-xs text-gray-400">保存済み</span>
+                <span className="text-xs text-slate-400">保存済み</span>
               )}
             </div>
           </div>
@@ -687,11 +687,11 @@ export default function SnsStrategyPage() {
 
       {/* 保存済み一覧 */}
       {snsDrafts.length > 0 && (
-        <section className="bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="font-semibold text-gray-800 mb-3">保存済みSNS戦略案（{snsDrafts.length}件）</h2>
+        <section className="bg-white rounded-xl border border-slate-200 p-5">
+          <h2 className="font-semibold text-slate-800 mb-3">保存済みSNS戦略案（{snsDrafts.length}件）</h2>
           <div className="space-y-2">
             {snsDrafts.map((draft) => (
-              <div key={draft.id} className="border border-gray-200 rounded-lg overflow-hidden">
+              <div key={draft.id} className="border border-slate-200 rounded-lg overflow-hidden">
                 <div className="flex items-center justify-between p-3">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${PHASE_COLOR[draft.marketingPhaseLink]}`}>
@@ -700,7 +700,7 @@ export default function SnsStrategyPage() {
                     <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">{draft.goalLabel}</span>
                     <UsageStatusBadge status={draft.usageStatus} onChange={(s) => handleUpdateStatusSns(draft.id, s)} />
                     {draft.platforms.map((p) => (
-                      <span key={p} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
+                      <span key={p} className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">
                         {SNS_PLATFORM_CONFIG[p].label}
                       </span>
                     ))}
@@ -712,7 +712,7 @@ export default function SnsStrategyPage() {
                     </a>
                     <a
                       href={draft.sourceType === 'brand' ? '/brand' : draft.sourceType === 'artwork' ? `/artworks/${draft.sourceId}/edit` : `/workshops/${draft.sourceId}/edit`}
-                      className="text-xs text-gray-500 hover:underline"
+                      className="text-xs text-slate-500 hover:underline"
                     >
                       {draft.sourceName} →
                     </a>
@@ -731,7 +731,7 @@ export default function SnsStrategyPage() {
                         {draft.referencedLineName}
                       </span>
                     )}
-                    <span className="text-xs text-gray-400">{fmtDate(draft.updatedAt)}</span>
+                    <span className="text-xs text-slate-400">{fmtDate(draft.updatedAt)}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <button
@@ -744,7 +744,7 @@ export default function SnsStrategyPage() {
                     <button
                       type="button"
                       onClick={() => handleDuplicate(draft)}
-                      className="text-xs text-gray-600 hover:underline"
+                      className="text-xs text-slate-600 hover:underline"
                     >
                       複製
                     </button>
@@ -766,7 +766,7 @@ export default function SnsStrategyPage() {
                 </div>
 
                 {expandedDraftId === draft.id && (
-                  <div className="border-t border-gray-100 px-4 py-3 space-y-3">
+                  <div className="border-t border-slate-100 px-4 py-3 space-y-3">
                     {/* 引き継ぎデータ */}
                     <div className="bg-purple-50 rounded p-2 text-xs space-y-2">
                       <div className="grid grid-cols-2 gap-2">
@@ -791,10 +791,10 @@ export default function SnsStrategyPage() {
                     {draft.sections.map((section) => (
                       <div key={section.key} className="text-xs">
                         <div className="flex items-center justify-between mb-0.5">
-                          <p className="font-medium text-gray-700">{section.label}</p>
+                          <p className="font-medium text-slate-700">{section.label}</p>
                           <CopyButton text={section.content} />
                         </div>
-                        <p className="text-gray-600 whitespace-pre-wrap bg-gray-50 rounded p-2 leading-relaxed">{section.content}</p>
+                        <p className="text-slate-600 whitespace-pre-wrap bg-slate-50 rounded p-2 leading-relaxed">{section.content}</p>
                       </div>
                     ))}
                   </div>

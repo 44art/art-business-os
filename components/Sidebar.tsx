@@ -92,7 +92,7 @@ export default function Sidebar() {
       </nav>
 
       <div className="px-4 py-3 border-t border-slate-700">
-        <p className="text-xs text-slate-500">Ver.1.0.0 — Phase2</p>
+        <p className="text-xs text-slate-500">Ver.1.0</p>
       </div>
     </aside>
   )

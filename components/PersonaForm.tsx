@@ -403,7 +403,7 @@ export default function PersonaForm({ id }: { id?: string }) {
               onClick={handleGenerateDraft}
               className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-colors"
             >
-              この対象でペルソナのたたき台を生成する
+              この対象でペルソナを生成する
             </button>
           )}
         </div>
@@ -442,7 +442,7 @@ export default function PersonaForm({ id }: { id?: string }) {
       <div className="flex items-start gap-2.5 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 mb-6">
         <span className="text-amber-500 flex-shrink-0 mt-0.5 text-sm">!</span>
         <p className="text-xs text-amber-700">
-          たたき台はルールベースで生成した提案です。内容を確認・編集してから保存してください。最終的な顧客像の判断はあなたが行います。
+          AIが生成した提案のたたき台です。内容を確認・編集してから保存してください。最終的な顧客像の判断はあなた自身が行ってください。
         </p>
       </div>
 

@@ -100,13 +100,13 @@ function PhaseCard({
                       setEditingKey('')
                     }}
                     rows={2}
-                    className="w-full text-xs border border-gray-300 rounded px-2 py-1 resize-y focus:outline-none focus:ring-1 focus:ring-blue-300"
+                    className="w-full text-xs border border-slate-300 rounded px-2 py-1 resize-y focus:outline-none focus:ring-1 focus:ring-blue-300"
                   />
                 ) : (
                   <button
                     type="button"
                     onClick={() => setEditingKey(key)}
-                    className="w-full text-left text-xs text-gray-700 hover:bg-white/70 rounded px-1 py-0.5 whitespace-pre-wrap"
+                    className="w-full text-left text-xs text-slate-700 hover:bg-white/70 rounded px-1 py-0.5 whitespace-pre-wrap"
                   >
                     {item}
                   </button>
@@ -128,11 +128,11 @@ function PhaseCard({
       >
         <div className="flex items-center gap-2">
           <span className={`text-base font-bold ${meta.color}`}>{phase.phaseLabel}</span>
-          <span className="text-xs text-gray-500">
+          <span className="text-xs text-slate-500">
             ✅ {phase.done.length} | ⚠️ {phase.missing.length} | 📌 {phase.nextActions.length}
           </span>
         </div>
-        <span className="text-gray-400 text-xs">{expanded ? '▲' : '▼'}</span>
+        <span className="text-slate-400 text-xs">{expanded ? '▲' : '▼'}</span>
       </button>
       {expanded && (
         <div className={`p-4 grid gap-4 sm:grid-cols-2 ${meta.bgColor}`}>
@@ -152,7 +152,7 @@ function DataBadge({ label, count }: { label: string; count: number }) {
   return (
     <span
       className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full font-medium ${
-        count > 0 ? 'bg-blue-100 text-blue-700' : 'bg-gray-50 text-gray-400'
+        count > 0 ? 'bg-blue-100 text-blue-700' : 'bg-slate-50 text-slate-400'
       }`}
     >
       {count > 0 ? '✓' : '○'} {label}: {count}件
@@ -344,12 +344,11 @@ export default function ConsultantPage() {
       {/* ヘッダー */}
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-xs bg-gray-800 text-white font-semibold px-2 py-0.5 rounded-full">全フェーズ</span>
-          <h1 className="text-2xl font-bold text-gray-900">AIコンサルタント</h1>
+          <h1 className="text-2xl font-bold text-slate-900">AIコンサルタント</h1>
+          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">全フェーズ</span>
         </div>
-        <p className="text-sm text-gray-500">
-          診断対象を選ぶと、認知→集客→販売→リピーター化の全フェーズを診断して
-          次にやるべきアクションを提案します。
+        <p className="text-sm text-slate-500">
+          診断対象を選ぶと、認知→集客→販売→リピーター化の全フェーズを診断し、次にやるべきアクションを提案します。
         </p>
       </div>
 
@@ -370,8 +369,8 @@ export default function ConsultantPage() {
       )}
 
       {/* STEP 1: 診断対象選択 */}
-      <section className="bg-white rounded-xl border border-gray-200 p-5">
-        <h2 className="font-semibold text-gray-800 mb-3">STEP 1 診断対象を選択</h2>
+      <section className="bg-white rounded-xl border border-slate-200 p-5">
+        <h2 className="font-semibold text-slate-800 mb-3">STEP 1 診断対象を選択</h2>
         <div className="flex gap-2 mb-3">
           {(['brand', 'artwork', 'workshop'] as const).map((t) => (
             <button
@@ -380,8 +379,8 @@ export default function ConsultantPage() {
               onClick={() => { setSourceType(t); setSourceId('') }}
               className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${
                 sourceType === t
-                  ? 'border-gray-800 bg-gray-800 text-white'
-                  : 'border-gray-200 text-gray-600 hover:border-gray-400'
+                  ? 'border-slate-800 bg-slate-800 text-white'
+                  : 'border-slate-200 text-slate-600 hover:border-slate-400'
               }`}
             >
               {sourceTypeLabel(t)}
@@ -391,7 +390,7 @@ export default function ConsultantPage() {
         <select
           value={sourceId}
           onChange={(e) => setSourceId(e.target.value)}
-          className="w-full border border-gray-200 rounded-md text-sm px-3 py-2 text-gray-700 bg-white"
+          className="w-full border border-slate-200 rounded-md text-sm px-3 py-2 text-slate-700 bg-white"
         >
           <option value="">
             {sourceOptions.length === 0
@@ -406,10 +405,10 @@ export default function ConsultantPage() {
 
       {/* STEP 2: 関連データサマリー */}
       {sourceId && selectedSource && (
-        <section className="bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="font-semibold text-gray-800 mb-3">
+        <section className="bg-white rounded-xl border border-slate-200 p-5">
+          <h2 className="font-semibold text-slate-800 mb-3">
             STEP 2 関連データを確認
-            <span className="ml-2 text-xs text-gray-400 font-normal">
+            <span className="ml-2 text-xs text-slate-400 font-normal">
               診断対象: {getSourceName(selectedSource)}
             </span>
           </h2>
@@ -422,7 +421,7 @@ export default function ConsultantPage() {
           </div>
           {relatedPersonas.length > 0 && (
             <div className="mt-3">
-              <p className="text-xs text-gray-500 mb-1">紐づくペルソナ:</p>
+              <p className="text-xs text-slate-500 mb-1">紐づくペルソナ:</p>
               <div className="flex flex-wrap gap-1">
                 {relatedPersonas.map((p) => (
                   <span key={p.id} className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">
@@ -448,7 +447,7 @@ export default function ConsultantPage() {
             type="button"
             disabled={isGenerating}
             onClick={handleGenerate}
-            className="px-8 py-3 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors text-sm"
+            className="px-8 py-3 bg-slate-900 text-white font-semibold rounded-xl hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors text-sm"
           >
             {isGenerating ? '診断中…' : 'マーケティング導線を診断する'}
           </button>
@@ -466,7 +465,7 @@ export default function ConsultantPage() {
 
           {/* フェーズ別診断 */}
           <div>
-            <h2 className="font-bold text-gray-900 text-lg mb-3">フェーズ別診断</h2>
+            <h2 className="font-bold text-slate-900 text-lg mb-3">フェーズ別診断</h2>
             <div className="grid gap-3">
               {report.phases.map((phase) => (
                 <PhaseCard
@@ -479,8 +478,8 @@ export default function ConsultantPage() {
           </div>
 
           {/* 全体診断 */}
-          <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-5">
-            <h2 className="font-bold text-gray-900 text-lg">全体診断</h2>
+          <div className="bg-white rounded-xl border border-slate-200 p-5 space-y-5">
+            <h2 className="font-bold text-slate-900 text-lg">全体診断</h2>
 
             {/* 最優先ポイント */}
             <div>
@@ -492,13 +491,13 @@ export default function ConsultantPage() {
                   onChange={(e) => handleOverallText('topPriority', e.target.value)}
                   onBlur={() => setEditingOverall((p) => ({ ...p, topPriority: false }))}
                   rows={4}
-                  className="w-full border border-gray-300 rounded-md text-sm px-3 py-2 resize-y focus:outline-none focus:ring-1 focus:ring-blue-300"
+                  className="w-full border border-slate-300 rounded-md text-sm px-3 py-2 resize-y focus:outline-none focus:ring-1 focus:ring-blue-300"
                 />
               ) : (
                 <button
                   type="button"
                   onClick={() => setEditingOverall((p) => ({ ...p, topPriority: true }))}
-                  className="w-full text-left text-sm text-gray-700 whitespace-pre-wrap bg-red-50 border border-red-100 rounded-lg p-3 hover:bg-red-100 transition-colors"
+                  className="w-full text-left text-sm text-slate-700 whitespace-pre-wrap bg-red-50 border border-red-100 rounded-lg p-3 hover:bg-red-100 transition-colors"
                 >
                   {report.topPriority}
                 </button>
@@ -515,13 +514,13 @@ export default function ConsultantPage() {
                   onChange={(e) => handleOverallText('quickWin', e.target.value)}
                   onBlur={() => setEditingOverall((p) => ({ ...p, quickWin: false }))}
                   rows={3}
-                  className="w-full border border-gray-300 rounded-md text-sm px-3 py-2 resize-y focus:outline-none focus:ring-1 focus:ring-blue-300"
+                  className="w-full border border-slate-300 rounded-md text-sm px-3 py-2 resize-y focus:outline-none focus:ring-1 focus:ring-blue-300"
                 />
               ) : (
                 <button
                   type="button"
                   onClick={() => setEditingOverall((p) => ({ ...p, quickWin: true }))}
-                  className="w-full text-left text-sm text-gray-700 whitespace-pre-wrap bg-green-50 border border-green-100 rounded-lg p-3 hover:bg-green-100 transition-colors"
+                  className="w-full text-left text-sm text-slate-700 whitespace-pre-wrap bg-green-50 border border-green-100 rounded-lg p-3 hover:bg-green-100 transition-colors"
                 >
                   {report.quickWin}
                 </button>
@@ -545,7 +544,7 @@ export default function ConsultantPage() {
                             handleOverallList('activeFlows', idx, e.target.value)
                             setEditingOverall((p) => ({ ...p, [eKey]: false }))
                           }}
-                          className="w-full border border-gray-300 rounded text-sm px-3 py-1 focus:outline-none focus:ring-1 focus:ring-blue-300"
+                          className="w-full border border-slate-300 rounded text-sm px-3 py-1 focus:outline-none focus:ring-1 focus:ring-blue-300"
                         />
                       ) : (
                         <button
@@ -579,7 +578,7 @@ export default function ConsultantPage() {
                             handleOverallList('weakFlows', idx, e.target.value)
                             setEditingOverall((p) => ({ ...p, [eKey]: false }))
                           }}
-                          className="w-full border border-gray-300 rounded text-sm px-3 py-1 focus:outline-none focus:ring-1 focus:ring-blue-300"
+                          className="w-full border border-slate-300 rounded text-sm px-3 py-1 focus:outline-none focus:ring-1 focus:ring-blue-300"
                         />
                       ) : (
                         <button
@@ -598,7 +597,7 @@ export default function ConsultantPage() {
 
             {/* 今後作るべきコンテンツ案 */}
             <div>
-              <p className="text-sm font-semibold text-gray-600 mb-1">📝 今後作るべきコンテンツ案</p>
+              <p className="text-sm font-semibold text-slate-600 mb-1">📝 今後作るべきコンテンツ案</p>
               <ul className="space-y-1">
                 {report.contentIdeas.map((idea, idx) => {
                   const eKey = `ci-${idx}`
@@ -613,13 +612,13 @@ export default function ConsultantPage() {
                             handleOverallList('contentIdeas', idx, e.target.value)
                             setEditingOverall((p) => ({ ...p, [eKey]: false }))
                           }}
-                          className="w-full border border-gray-300 rounded text-sm px-3 py-1 focus:outline-none focus:ring-1 focus:ring-blue-300"
+                          className="w-full border border-slate-300 rounded text-sm px-3 py-1 focus:outline-none focus:ring-1 focus:ring-blue-300"
                         />
                       ) : (
                         <button
                           type="button"
                           onClick={() => setEditingOverall((p) => ({ ...p, [eKey]: true }))}
-                          className="w-full text-left text-sm text-gray-700 bg-gray-50 rounded px-3 py-1.5 hover:bg-gray-100"
+                          className="w-full text-left text-sm text-slate-700 bg-slate-50 rounded px-3 py-1.5 hover:bg-slate-100"
                         >
                           • {idea}
                         </button>
@@ -630,7 +629,7 @@ export default function ConsultantPage() {
               </ul>
             </div>
 
-            <p className="text-xs text-gray-400 border-t border-gray-100 pt-3">
+            <p className="text-xs text-slate-400 border-t border-slate-100 pt-3">
               ✏️ 各項目をクリックすると編集できます（クリック → 編集 → フォーカスを外すと確定）
             </p>
           </div>
@@ -640,13 +639,13 @@ export default function ConsultantPage() {
             <button
               type="button"
               onClick={handleSave}
-              className="px-6 py-2 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors text-sm"
+              className="px-6 py-2 bg-slate-900 text-white font-semibold rounded-lg hover:bg-slate-700 transition-colors text-sm"
             >
               診断結果を保存する
             </button>
             {savedMsg && <span className="text-sm text-green-600 font-medium">{savedMsg}</span>}
             {report.status === 'saved' && !savedMsg && (
-              <span className="text-xs text-gray-400">保存済み</span>
+              <span className="text-xs text-slate-400">保存済み</span>
             )}
           </div>
 
@@ -679,19 +678,19 @@ export default function ConsultantPage() {
 
       {/* 保存済みレポート一覧 */}
       {reports.length > 0 && (
-        <section className="bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="font-semibold text-gray-800 mb-3">保存済み診断レポート（{reports.length}件）</h2>
+        <section className="bg-white rounded-xl border border-slate-200 p-5">
+          <h2 className="font-semibold text-slate-800 mb-3">保存済み診断レポート（{reports.length}件）</h2>
           <div className="space-y-2">
             {reports.map((r) => (
-              <div key={r.id} className="border border-gray-200 rounded-lg overflow-hidden">
+              <div key={r.id} className="border border-slate-200 rounded-lg overflow-hidden">
                 <div className="flex items-center justify-between p-3">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap mb-1">
-                      <span className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full font-medium">
+                      <span className="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full font-medium">
                         {sourceTypeLabel(r.sourceType)}: {r.sourceName}
                       </span>
                       <UsageStatusBadge status={r.usageStatus} onChange={(s) => handleUpdateStatusReport(r.id, s)} />
-                      <span className="text-xs text-gray-400">{fmtDate(r.updatedAt)}</span>
+                      <span className="text-xs text-slate-400">{fmtDate(r.updatedAt)}</span>
                     </div>
                     {r.personaNames && r.personaNames.length > 0 && (
                       <div className="flex flex-wrap gap-1 mb-1">
@@ -703,7 +702,7 @@ export default function ConsultantPage() {
                       </div>
                     )}
                     {r.relatedDataSummary && (
-                      <div className="flex gap-2 text-xs text-gray-400">
+                      <div className="flex gap-2 text-xs text-slate-400">
                         <span>コンテンツ {r.relatedDataSummary.content}件</span>
                         <span>LP {r.relatedDataSummary.lp}件</span>
                         <span>LINE {r.relatedDataSummary.line}件</span>
@@ -714,14 +713,14 @@ export default function ConsultantPage() {
                   <div className="flex items-center gap-2 flex-shrink-0">
                     <a
                       href={r.sourceType === 'brand' ? '/brand' : r.sourceType === 'artwork' ? `/artworks/${r.sourceId}/edit` : `/workshops/${r.sourceId}/edit`}
-                      className="text-xs text-gray-500 hover:underline"
+                      className="text-xs text-slate-500 hover:underline"
                     >
                       素材→
                     </a>
                     <button
                       type="button"
                       onClick={() => handleDuplicate(r)}
-                      className="text-xs text-gray-600 hover:underline"
+                      className="text-xs text-slate-600 hover:underline"
                     >
                       複製
                     </button>
@@ -742,14 +741,14 @@ export default function ConsultantPage() {
                   </div>
                 </div>
                 {expandedReportId === r.id && (
-                  <div className="border-t border-gray-100 px-4 py-3 space-y-4">
+                  <div className="border-t border-slate-100 px-4 py-3 space-y-4">
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       {r.phases.map((phase) => {
                         const meta = PHASE_META[phase.phase]
                         return (
                           <div key={phase.phase} className={`rounded-lg p-2 ${meta.bgColor} border ${meta.borderColor}`}>
                             <p className={`text-xs font-bold ${meta.color}`}>{phase.phaseLabel}</p>
-                            <p className="text-xs text-gray-500 mt-0.5">
+                            <p className="text-xs text-slate-500 mt-0.5">
                               ✅{phase.done.length} ⚠️{phase.missing.length}
                             </p>
                           </div>
@@ -762,14 +761,14 @@ export default function ConsultantPage() {
                           <p className="text-red-600 font-semibold">最優先改善ポイント</p>
                           <CopyButton text={r.topPriority} />
                         </div>
-                        <p className="text-gray-700 whitespace-pre-wrap">{r.topPriority}</p>
+                        <p className="text-slate-700 whitespace-pre-wrap">{r.topPriority}</p>
                       </div>
                       <div className="bg-green-50 rounded p-2">
                         <div className="flex items-center justify-between mb-0.5">
                           <p className="text-green-600 font-semibold">次の一手</p>
                           <CopyButton text={r.quickWin} />
                         </div>
-                        <p className="text-gray-700 whitespace-pre-wrap">{r.quickWin}</p>
+                        <p className="text-slate-700 whitespace-pre-wrap">{r.quickWin}</p>
                       </div>
                       {r.activeFlows && r.activeFlows.length > 0 && (
                         <div className="bg-teal-50 rounded p-2">
@@ -777,7 +776,7 @@ export default function ConsultantPage() {
                             <p className="text-teal-600 font-semibold">今すぐ使える導線</p>
                             <CopyButton text={r.activeFlows.join('\n')} label="一括コピー" />
                           </div>
-                          <ul className="text-gray-700 space-y-0.5">
+                          <ul className="text-slate-700 space-y-0.5">
                             {r.activeFlows.map((flow, i) => (
                               <li key={i} className="flex items-start gap-1">
                                 <span className="text-teal-400 flex-shrink-0">→</span>
@@ -793,7 +792,7 @@ export default function ConsultantPage() {
                             <p className="text-blue-600 font-semibold">コンテンツ案</p>
                             <CopyButton text={r.contentIdeas.join('\n')} label="一括コピー" />
                           </div>
-                          <ul className="text-gray-700 space-y-0.5">
+                          <ul className="text-slate-700 space-y-0.5">
                             {r.contentIdeas.map((idea, i) => (
                               <li key={i} className="flex items-start gap-1">
                                 <span className="text-blue-400 flex-shrink-0">•</span>
