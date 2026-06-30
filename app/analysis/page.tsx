@@ -261,16 +261,23 @@ export default function AnalysisPage() {
 
           {/* 次にやるべきアクション */}
           <div className="bg-indigo-600 rounded-2xl p-6 mb-4">
-            <p className="text-xs font-semibold text-indigo-200 uppercase tracking-wider mb-3">次にやるべきアクション（優先順）</p>
+            <p className="text-xs font-semibold text-indigo-200 uppercase tracking-wider mb-3">次にやるべきアクション</p>
+            <p className="text-xs text-indigo-300 mb-4">今すぐ → 次に整える → 後で検討 の順に優先度が下がります</p>
             <ol className="space-y-2.5">
-              {result.nextActions.map((action, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <span className="flex-shrink-0 w-5 h-5 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center mt-0.5">
-                    {i + 1}
-                  </span>
-                  <span className="text-sm text-white leading-relaxed">{action}</span>
-                </li>
-              ))}
+              {result.nextActions.map((action, i) => {
+                const isNow = action.startsWith('[今すぐ]')
+                const isNext = action.startsWith('[次に整える]')
+                return (
+                  <li key={i} className="flex items-start gap-3">
+                    <span className={`flex-shrink-0 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center mt-0.5 ${
+                      isNow ? 'bg-red-400 text-white' : isNext ? 'bg-yellow-400 text-slate-900' : 'bg-white/20 text-white'
+                    }`}>
+                      {i + 1}
+                    </span>
+                    <span className="text-sm text-white leading-relaxed">{action}</span>
+                  </li>
+                )
+              })}
             </ol>
           </div>
 
@@ -320,7 +327,6 @@ export default function AnalysisPage() {
               この情報でペルソナを作成する
               <span className="text-purple-300">→</span>
             </Link>
-            <p className="text-xs text-slate-400 mt-2">※ ペルソナ作成機能は今後実装予定です</p>
           </div>
         </div>
       )}

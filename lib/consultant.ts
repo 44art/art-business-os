@@ -94,12 +94,12 @@ function diagnoseAwareness(
   }
   improvements.push('週間投稿スケジュールを固定して継続的に発信する体制を作る')
 
-  // nextActions
-  if (!hasPersona) nextActions.push('□ ペルソナ作成画面で顧客像を1件作成する')
-  if (!hasSnsStrategy) nextActions.push('□ SNS戦略画面で「認知拡大」目的の戦略案を生成する')
-  if (!hasSnsContent) nextActions.push('□ コンテンツ生成画面で「SNS投稿」コンテンツを作成する')
-  nextActions.push('□ 作成したSNS投稿を今週から週3回以上投稿する')
-  nextActions.push('□ 全SNS媒体のプロフィール文・リンクを統一して整備する')
+  // nextActions (今すぐ → 次に整える → 後で検討)
+  if (!hasPersona) nextActions.push('[今すぐ] ペルソナ作成で顧客像を1件定義する')
+  if (!hasSnsContent) nextActions.push('[今すぐ] コンテンツ生成で「SNS投稿文」を1件作成して今週から投稿する')
+  if (!hasSnsStrategy) nextActions.push('[次に整える] SNS戦略で「認知拡大」目的の戦略案を1件生成する')
+  nextActions.push('[次に整える] 全SNS媒体のプロフィール文・プロフィールリンクを統一して整備する')
+  nextActions.push('[後で検討] 投稿の反応（いいね・保存・プロフィールアクセス）を週次で計測する仕組みを作る')
 
   return {
     phase: 'awareness',
@@ -167,10 +167,14 @@ function diagnoseAcquisition(
   }
   improvements.push('SNS投稿の末尾に必ずLP/LINEへの誘導CTAを入れる')
 
-  nextActions.push(hasLp ? '□ LP案のURLをSNSプロフィールに設定する' : '□ LP作成支援でLP構成案を1件生成する')
-  nextActions.push(hasLine ? '□ LINE登録URLをLP・SNSプロフィールに設置する' : '□ LINE活用支援でLINE戦略を1件生成する')
-  if (isWs && !hasWsContent) nextActions.push('□ コンテンツ生成でWS告知文を作成する')
-  nextActions.push('□ SNS投稿で「LINE登録 or LP閲覧」への誘導投稿を週1回実施する')
+  nextActions.push(hasLp
+    ? '[今すぐ] LP案を参照してSNSプロフィールのリンクを設定する'
+    : '[今すぐ] LP作成支援で集客LPの構成案を1件生成する')
+  nextActions.push(hasLine
+    ? '[今すぐ] LINE登録URLをLP・SNSプロフィールの全媒体に設置する'
+    : '[次に整える] LINE活用支援でLINEシナリオを1件生成する')
+  if (isWs && !hasWsContent) nextActions.push('[今すぐ] コンテンツ生成でWS告知文を作成してSNSに投稿する')
+  nextActions.push('[次に整える] SNS投稿に「LINEで先行案内中↓」CTA文を追加して毎週1回誘導投稿を出す')
 
   return {
     phase: 'acquisition',
@@ -241,10 +245,14 @@ function diagnoseSales(
   }
   improvements.push('販売ページのCTAテキストをペルソナに刺さる言葉に合わせて調整する')
 
-  nextActions.push(lpSales.length === 0 ? '□ LP作成支援で販売用LP案を1件生成する' : '□ 作成済みLP案をもとに実際のLPを公開・設定する')
-  nextActions.push(salesContent.length === 0 ? '□ コンテンツ生成で販売文を1件作成する' : '□ 作成済み販売文をSNS・LP・LINEで活用する')
-  nextActions.push('□ 購入 or 申し込みまでのステップ数を3ステップ以内に簡略化する')
-  nextActions.push('□ 購入者・参加者の感想を集めて社会的証明として活用できる準備をする')
+  nextActions.push(lpSales.length === 0
+    ? '[今すぐ] LP作成支援で販売・予約LP案を1件生成する'
+    : '[今すぐ] 作成済みLP案をもとに実際のLPページを公開・リンク設定する')
+  nextActions.push(salesContent.length === 0
+    ? '[今すぐ] コンテンツ生成で販売文または作品紹介文を1件作成する'
+    : '[今すぐ] 作成済み販売文をSNS・LP・LINEで実際に活用する')
+  nextActions.push('[次に整える] 購入・申し込みまでのステップを3ステップ以内に簡略化する')
+  nextActions.push('[後で検討] 購入者・参加者の感想を集めて社会的証明（口コミ）として活用する')
 
   return {
     phase: 'sales',
@@ -302,10 +310,14 @@ function diagnoseRetention(
   improvements.push('SNSのファン向け投稿（制作日記・制作秘話）を週1〜2回継続して信頼を蓄積する')
   improvements.push('年間イベント（クリスマス・年末など）に合わせた先行案内メッセージを事前に作成する')
 
-  nextActions.push(lineRetention.length === 0 ? '□ LINE活用支援で「リピーター化」戦略を生成する' : '□ LINE戦略に基づいてLINE公式アカウントのシナリオを設定する')
-  nextActions.push(lineContent.length === 0 ? '□ コンテンツ生成でLINE配信文を1件作成する' : '□ 作成済みLINE配信文をLINE公式アカウントに登録する')
-  nextActions.push('□ 全ての購入者・WS参加者にLINE登録を案内するフローを決める')
-  nextActions.push('□ 月1回以上のLINE配信スケジュールをカレンダーに入れる')
+  nextActions.push(lineRetention.length === 0
+    ? '[今すぐ] LINE活用支援で「リピーター化」または「ファン化」目的の戦略を1件生成する'
+    : '[今すぐ] 作成済みLINE戦略をLINE公式アカウントのシナリオに設定する')
+  nextActions.push(lineContent.length === 0
+    ? '[今すぐ] コンテンツ生成でLINE配信文（お礼・次回案内）を1件作成する'
+    : '[次に整える] 作成済みLINE配信文をLINE公式アカウントに登録する')
+  nextActions.push('[次に整える] 全購入者・WS参加者にLINE登録を案内するフロー（当日・翌日）を決める')
+  nextActions.push('[後で検討] 月1〜2回のLINE配信スケジュールをカレンダーに固定する')
 
   return {
     phase: 'retention',
@@ -365,9 +377,22 @@ function diagnoseOverall(
 
   // 最優先改善ポイント
   const phaseLabels: Record<string, string> = { awareness: '認知', acquisition: '集客', sales: '販売', retention: 'リピーター化' }
-  const topPriority = `【${phaseLabels[weakestPhase.phase] ?? '全体'}フェーズの強化】\n${
-    phases.find((p) => p.phase === weakestPhase.phase)?.missing[0] ?? '各フェーズの施策を順番に整備してください'
-  }\n→ ${phases.find((p) => p.phase === weakestPhase.phase)?.improvements[0] ?? '次のアクションを実行してください'}`
+  const weakPhase = phases.find((p) => p.phase === weakestPhase.phase)
+  const topPriority = [
+    `【最優先：${phaseLabels[weakestPhase.phase] ?? '全体'}フェーズの強化】`,
+    '',
+    `▼ 問題点`,
+    weakPhase?.missing[0] ?? '各フェーズの施策を順番に整備してください',
+    '',
+    `▼ 今すぐやること`,
+    weakPhase?.improvements[0] ?? '次のアクション項目を実行してください',
+    '',
+    `▼ 次に整えること`,
+    weakPhase?.improvements[1] ?? weakPhase?.nextActions[0] ?? '各フェーズの詳細アクションを確認してください',
+    '',
+    `▼ 後で検討すること`,
+    weakPhase?.improvements[2] ?? '効果を計測しながら継続的に改善してください',
+  ].join('\n')
 
   // 売上につながりやすい次の一手
   let quickWin = ''

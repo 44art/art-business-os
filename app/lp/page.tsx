@@ -544,9 +544,12 @@ export default function LpPage() {
         {savedLps.length > 0 && (
           <div className="mt-6 bg-purple-50 border border-purple-200 rounded-xl p-5">
             <p className="text-sm font-semibold text-purple-900 mb-1">次のステップ：LINE活用支援</p>
-            <p className="text-xs text-purple-700">
-              保存したLP案の「LINE誘導文」・ペルソナデータをもとに、LINE配信文・ステップ配信案を作成できます（実装予定）
+            <p className="text-xs text-purple-700 mb-3">
+              保存したLP案の「LINE誘導文」・ペルソナデータをもとに、LINE配信文・ステップ配信案を作成できます
             </p>
+            <a href="/line" className="inline-block text-xs font-medium text-white bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg transition-colors">
+              LINE活用支援へ →
+            </a>
           </div>
         )}
       </div>

@@ -637,9 +637,12 @@ export default function LinePage() {
         {savedLineDrafts.length > 0 && (
           <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-5">
             <p className="text-sm font-semibold text-blue-900 mb-1">次のステップ：SNS戦略</p>
-            <p className="text-xs text-blue-700">
-              保存したLINE活用案の「SNS誘導文言」・おすすめチャネルをもとに、SNS戦略画面で媒体別の投稿方針・週間投稿案を作成できます（実装予定）
+            <p className="text-xs text-blue-700 mb-3">
+              保存したLINE活用案の「SNS誘導文言」・おすすめチャネルをもとに、SNS戦略画面で媒体別の投稿方針・週間投稿案を作成できます
             </p>
+            <a href="/sns-strategy" className="inline-block text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">
+              SNS戦略へ →
+            </a>
           </div>
         )}
       </div>

@@ -87,31 +87,43 @@ function genSnsPost(
 ): GenerationOutput {
   const { subject, bodyLines, strength } = extractSourceInfo(persona, source)
   const hashtags = buildHashtags(persona, source)
+  const channelList = persona.usedChannels.slice(0, 2).join('・') || 'Instagram'
 
   const parts: string[] = []
 
+  // フック（最初の1〜2行で止まらせる）
   if (pain) {
-    parts.push(`「${pain}」\n\nそんなお気持ち、ありませんか？`)
-    parts.push('')
+    parts.push(`「${pain}」`)
+    parts.push(`そんな気持ち、ありませんか？`)
+  } else if (phrase) {
+    parts.push(`「${phrase}」`)
+  } else {
+    parts.push(subject ? `${subject}をご紹介します。` : 'お知らせがあります。')
   }
 
-  parts.push(subject ? `${subject}は、` : '')
+  parts.push('')
+
+  // 本文
+  if (subject) parts.push(`${subject}は、`)
   if (bodyLines[0]) parts.push(bodyLines[0])
   if (bodyLines[1]) parts.push(bodyLines[1])
 
-  if (phrase) {
+  if (desire) {
+    parts.push('')
+    parts.push(`「${desire}」を叶えたい方に、ぜひ見ていただきたいです。`)
+  }
+
+  if (phrase && !pain) {
     parts.push('')
     parts.push(`—— ${phrase} ——`)
   }
 
-  if (desire) {
-    parts.push('')
-    parts.push(`${desire}を実現したい方に、ぜひ一度見ていただきたいです。`)
-  }
-
+  // CTA
   parts.push('')
-  parts.push('詳細・お問い合わせはプロフィールリンクから↓')
+  parts.push(`▼ 詳細・お問い合わせはプロフィールリンクから`)
   parts.push(channel)
+  parts.push('')
+  parts.push(`📱 ${channelList}でフォローして最新作をチェック`)
 
   return {
     contentType: 'sns_post',
@@ -120,9 +132,9 @@ function genSnsPost(
     addressedPain: pain || '（未設定）',
     addressedDesire: desire || '（未設定）',
     strength,
-    cta: `詳細はプロフィールリンクへ → ${channel}`,
+    cta: `プロフィールリンクから詳細へ → ${channel}`,
     salesChannel: channel,
-    content: parts.filter(Boolean).join('\n'),
+    content: parts.filter(s => s !== undefined).join('\n'),
     hashtags,
   }
 }
@@ -160,24 +172,30 @@ function genWsAnnounce(
   }
 
   const content = [
-    `【${title}】開催のお知らせ`,
+    `✨【${title}】参加者募集中`,
     '',
     description || '（WSの内容を補足してください）',
     '',
     '▼ こんな方におすすめ',
-    targetAudience,
+    `・${targetAudience}`,
     ...(pain ? [`・「${pain}」を解決したい方`] : []),
-    ...(desire ? [`・「${desire}」を目指している方`] : []),
+    ...(desire ? [`・「${desire}」を叶えたい方`] : []),
     '',
     '▼ 開催詳細',
     `・形式：${formatLabel}`,
     ...(price ? [`・参加費：${price}`] : []),
     ...(duration ? [`・所要時間：${duration}`] : []),
+    `・日程：（開催日時を追記してください）`,
+    `・場所：（会場・URLを追記してください）`,
+    '',
+    '▼ 定員について',
+    '少人数制のため、残席わずかです。',
+    '気になる方はお早めにお申し込みください！',
     '',
     '▼ お申し込み・詳細はこちら',
     channel,
     '',
-    '残席に限りがあります。気になる方はお早めにどうぞ！',
+    '初心者・未経験の方も大歓迎です。お気軽にご参加ください😊',
   ].join('\n')
 
   return {
@@ -231,20 +249,22 @@ function genArtworkSales(
     '',
     concept || '（作品のコンセプト・込めた想いを補足してください）',
     '',
+    ...(phrase ? [`「${phrase}」`, ''] : []),
     '▼ こんな方に',
-    targetCustomer,
-    ...(pain ? [`「${pain}」を感じている方`] : []),
-    ...(desire ? [`「${desire}」を叶えたい方`] : []),
+    `・${targetCustomer}`,
+    ...(pain ? [`・「${pain}」を感じている方`] : []),
+    ...(desire ? [`・「${desire}」を叶えたい方`] : []),
+    `・大切な方へのギフト・プレゼントをお探しの方`,
     '',
-    ...(features ? ['▼ 作品の特徴', features, ''] : []),
-    ...(phrase ? [`—— ${phrase} ——`, ''] : []),
-    '▼ 価格',
+    ...(features ? ['▼ 作品の特徴・こだわり', features, ''] : []),
+    '▼ 価格・ご購入について',
     priceText,
+    `一点物のため、同じ作品は二度と制作しません。`,
     '',
-    'ご購入・お問い合わせはこちら',
+    '▼ ご購入・お問い合わせはこちら',
     channel,
     '',
-    '一点物のため、お早めにどうぞ。',
+    '「もう少し詳しく聞きたい」という方もお気軽にどうぞ😊',
   ].join('\n')
 
   return {
@@ -297,16 +317,17 @@ function genLineMessage(
   const content = [
     `こんにちは、${senderName}です！`,
     '',
-    `いつもご覧いただきありがとうございます。`,
+    `いつもご覧いただき、本当にありがとうございます。`,
+    `今日は大切なお知らせがあります。`,
     '',
     announceBody,
     '',
-    ...(desire ? [`${desire}を目指している方に特におすすめです。`,''] : []),
+    ...(desire ? [`「${desire}」を大切にしている方に、ぜひ知っていただきたい内容です。`,''] : []),
     '▼ 詳細はこちら',
     channel,
     '',
-    '気になる方は、このトークにそのまま返信してください。',
-    'お気軽にどうぞ！',
+    `気になること・ご質問があれば、このトークにそのまま返信してください。`,
+    `必ずお返事します。お気軽にどうぞ！`,
   ].join('\n')
 
   return {
@@ -336,27 +357,31 @@ function genLpIntro(
   const subheadline = desire || '特別な一点物で、日常をもっと自分らしく。'
 
   const content = [
-    '── 大見出し ──────────────────',
+    '── ファーストビュー見出し ───────',
     headline,
     '',
-    '── サブ見出し ─────────────────',
+    '── サブコピー（対象者・約束）────',
+    `${persona.name}の方へ。`,
     subheadline,
     '',
-    '── 問題提起（本文前半）────────',
+    '── 問題提起 ────────────────────',
     pain
-      ? `「${pain}」\n\nそんな悩みを抱えていませんか？`
+      ? `「${pain}」\n\nそんな気持ちを抱えていませんか？`
       : '（ペルソナの悩みをもとに問題提起を補足してください）',
     '',
-    '── 解決策・強み（本文後半）────',
-    subject ? `${subject}は、` : '',
+    '── 解決策・提案 ─────────────────',
+    subject ? `${subject}なら、その悩みを解決できます。` : '',
     bodyLines[0] || '（素材情報をもとに補足してください）',
     ...(bodyLines[1] ? [bodyLines[1]] : []),
     '',
-    `${persona.name || '理想の顧客'}の方が「これだ」と感じてくれるものを目指しました。`,
+    `「${desire || 'あなたの理想'}」を実現したい方に、自信を持っておすすめします。`,
     '',
-    '── CTA ────────────────────────',
-    `【 ${desire ? desire + 'を叶える' : 'まずはお問い合わせから'} 】`,
-    `↓`,
+    '── CTA（行動を促す一言）─────────',
+    desire
+      ? `「${desire}」を叶える第一歩を、今すぐ踏み出しませんか？`
+      : `まずはお気軽にお問い合わせください。`,
+    '',
+    `▼ ${desire ? desire + 'を叶える' : '詳細・お問い合わせ'}はこちら`,
     channel,
   ].filter(s => s !== undefined).join('\n')
 

@@ -270,38 +270,56 @@ function buildBrandSalesDirection(brand: Brand): string {
 }
 
 function buildBrandNextActions(brand: Brand): string[] {
-  const actions: string[] = []
-  if (!brand.targetCustomer) actions.push('「想定顧客」をより具体的に記入する')
-  if (!brand.strengths)      actions.push('「強み・独自性」を記入する')
-  if (!brand.salesChannel)   actions.push('「販売導線」を整備して記入する')
-  actions.push('Instagramプロフィールとリンクを整備する')
-  actions.push('ペルソナを作成してコンテンツ精度を高める')
-  actions.push('作品またはWSのSNS投稿文をコンテンツ生成で作る')
-  return actions.slice(0, 5)
+  const now: string[] = []
+  const next: string[] = []
+  const later: string[] = []
+
+  if (!brand.targetCustomer) now.push('[今すぐ] ブランド管理で「想定顧客」を具体的に記入する')
+  if (!brand.strengths)      now.push('[今すぐ] ブランド管理で「強み・独自性」を記入する')
+  if (!brand.salesChannel)   now.push('[今すぐ] ブランド管理で「販売導線」（Instagram→LP→決済 等）を整備する')
+
+  if (brand.targetCustomer && brand.strengths) {
+    now.push('[今すぐ] ペルソナ作成でブランドの顧客像を1件定義する')
+  }
+  next.push('[次に整える] Instagramプロフィール文とプロフィールリンクを整備する')
+  next.push('[次に整える] コンテンツ生成でSNS投稿文を1件作成し、今週から投稿を開始する')
+  later.push('[後で検討] AIコンサルタントでマーケティング導線全体を診断する')
+
+  return [...now, ...next, ...later].slice(0, 5)
 }
 
 function buildArtworkNextActions(artwork: Artwork): string[] {
-  const actions: string[] = []
-  if (!artwork.targetCustomer) actions.push('「想定顧客」を詳しく記入する')
-  if (!artwork.features)       actions.push('「特徴」（素材・技法・見た目）を記入する')
-  actions.push('この作品のSNS投稿文をコンテンツ生成で作る')
+  const now: string[] = []
+  const next: string[] = []
+  const later: string[] = []
+
+  if (!artwork.targetCustomer) now.push('[今すぐ] 作品管理で「想定顧客」（誰に買ってほしいか）を記入する')
+  if (!artwork.features)       now.push('[今すぐ] 作品管理で「特徴」（素材・技法・見た目）を記入する')
+  now.push('[今すぐ] コンテンツ生成でこの作品の「SNS投稿文」を1件作成する')
+
   if (artwork.status === 'selling') {
-    actions.push('この作品の販売LPをLP作成支援で作る')
+    next.push('[次に整える] LP作成支援でこの作品の販売LPを作成し、プロフィールリンクに設定する')
   }
-  actions.push('この作品の想定顧客でペルソナを作成する')
-  actions.push('制作過程の写真・動画を撮影してInstagramに投稿する')
-  return actions.slice(0, 5)
+  next.push('[次に整える] ペルソナ作成でこの作品の想定顧客像を1件定義する')
+  later.push('[後で検討] 制作過程の写真・動画をInstagramのReelsとして投稿する')
+
+  return [...now, ...next, ...later].slice(0, 5)
 }
 
 function buildWorkshopNextActions(ws: Workshop): string[] {
-  const actions: string[] = []
-  if (!ws.targetAudience) actions.push('「対象者」を具体的に記入する')
-  if (!ws.salesChannel)   actions.push('「集客導線」を整備して記入する')
-  actions.push('このWSの集客LP文章をLP作成支援で作る')
-  actions.push('WSの告知SNS投稿文をコンテンツ生成で作る')
-  if (ws.status === 'draft') actions.push('WSのステータスを「募集中」に変更する')
-  actions.push('参加者向けLINEお礼メッセージをLINE活用支援で作る')
-  return actions.slice(0, 5)
+  const now: string[] = []
+  const next: string[] = []
+  const later: string[] = []
+
+  if (!ws.targetAudience) now.push('[今すぐ] WS管理で「対象者」（誰向けのWSか）を具体的に記入する')
+  if (!ws.salesChannel)   now.push('[今すぐ] WS管理で「集客導線」（Instagram→フォーム 等）を整備する')
+  if (ws.status === 'draft') now.push('[今すぐ] WS管理でステータスを「募集中」に変更する')
+
+  next.push('[次に整える] コンテンツ生成でこのWSの「告知文」を1件作成してSNSに投稿する')
+  next.push('[次に整える] LP作成支援でWS予約LPを作成し、プロフィールリンクに設定する')
+  later.push('[後で検討] LINE活用支援でWS参加者向けのLINEシナリオを作成する')
+
+  return [...now, ...next, ...later].slice(0, 5)
 }
 
 function extractBrandNeeds(brand: Brand): string[] {

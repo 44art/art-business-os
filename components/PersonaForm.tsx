@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import type { Brand, Artwork, Workshop, Persona, PersonaSourceType } from '@/types'
 import {
   getBrand, getArtworks, getWorkshops,
@@ -148,6 +149,7 @@ export default function PersonaForm({ id }: { id?: string }) {
   const [sourceName, setSourceName] = useState('')
   const [form, setForm] = useState<FormData>(EMPTY_FORM)
   const [saving, setSaving] = useState(false)
+  const [savedOk, setSavedOk] = useState(false)
 
   useEffect(() => {
     setBrand(getBrand())
@@ -250,7 +252,8 @@ export default function PersonaForm({ id }: { id?: string }) {
     } else {
       savePersona(persona)
     }
-    router.push('/personas')
+    setSaving(false)
+    setSavedOk(true)
   }
 
   // 削除
@@ -258,6 +261,46 @@ export default function PersonaForm({ id }: { id?: string }) {
     if (!id || !window.confirm('このペルソナを削除しますか？')) return
     deletePersona(id)
     router.push('/personas')
+  }
+
+  // ─── 保存完了画面 ───
+
+  if (savedOk) {
+    return (
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white rounded-xl border border-slate-200 p-8 text-center">
+          <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+            <span className="text-green-600 text-xl font-bold">✓</span>
+          </div>
+          <h2 className="text-lg font-bold text-slate-900 mb-1">
+            {isEdit ? 'ペルソナを更新しました' : 'ペルソナを保存しました'}
+          </h2>
+          <p className="text-sm text-slate-500 mb-6">
+            このペルソナをもとにコンテンツを生成できます
+          </p>
+          <div className="flex flex-col gap-3 max-w-xs mx-auto">
+            <Link
+              href="/content"
+              className="block px-5 py-3 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition-colors"
+            >
+              コンテンツを生成する →
+            </Link>
+            <Link
+              href="/personas/new"
+              className="block px-5 py-3 text-sm font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition-colors"
+            >
+              別のペルソナを作成する →
+            </Link>
+            <Link
+              href="/personas"
+              className="block px-5 py-3 text-sm font-medium text-slate-600 hover:text-slate-900 border border-slate-200 rounded-xl transition-colors"
+            >
+              ← ペルソナ一覧へ戻る
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   // ─── ソース選択画面 ───

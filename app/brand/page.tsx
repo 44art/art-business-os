@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import type { Brand } from '@/types'
 import { getBrand, saveBrand } from '@/lib/storage'
 import FormField, { inputClass, textareaClass } from '@/components/FormField'
@@ -110,8 +111,23 @@ export default function BrandPage() {
       {!isEditing && brand && (
         <div className="space-y-4">
           {saved && (
-            <div className="bg-green-50 border border-green-200 rounded-lg px-4 py-3 text-sm text-green-700">
-              ブランド情報を保存しました
+            <div className="bg-green-50 border border-green-200 rounded-xl px-5 py-4">
+              <p className="text-sm font-semibold text-green-700 mb-2">ブランド情報を保存しました</p>
+              <p className="text-xs text-green-600 mb-3">次のステップに進みましょう</p>
+              <div className="flex flex-wrap gap-2">
+                <Link
+                  href="/analysis"
+                  className="inline-block px-4 py-2 text-xs font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
+                >
+                  AIマーケティング分析へ →
+                </Link>
+                <Link
+                  href="/personas/new"
+                  className="inline-block px-4 py-2 text-xs font-medium text-green-700 bg-white hover:bg-green-50 border border-green-300 rounded-lg transition-colors"
+                >
+                  ペルソナを作成する →
+                </Link>
+              </div>
             </div>
           )}
 
@@ -153,10 +169,16 @@ export default function BrandPage() {
 
           <div className="bg-indigo-50 border border-indigo-100 rounded-xl px-5 py-4">
             <p className="text-xs font-semibold text-indigo-700 mb-1">AI生成への活用</p>
-            <p className="text-sm text-indigo-600">
+            <p className="text-sm text-indigo-600 mb-3">
               このブランド情報は、コンテンツ生成・LP作成・LINE活用のAI機能で自動的に参照されます。
               変更した場合は次回の生成から反映されます。
             </p>
+            <Link
+              href="/analysis"
+              className="inline-block text-xs font-medium text-indigo-700 hover:text-indigo-900 underline underline-offset-2"
+            >
+              AIマーケティング分析で現状を確認する →
+            </Link>
           </div>
         </div>
       )}

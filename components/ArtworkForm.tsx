@@ -56,6 +56,7 @@ export default function ArtworkForm({ id }: Props) {
   const [form, setForm] = useState<FormState>(initialForm)
   const [error, setError] = useState('')
   const [deleting, setDeleting] = useState(false)
+  const [savedOk, setSavedOk] = useState(false)
 
   const isEdit = Boolean(id)
 
@@ -105,7 +106,7 @@ export default function ArtworkForm({ id }: Props) {
     } else {
       saveArtwork({ ...data, id: crypto.randomUUID(), createdAt: now } as Artwork)
     }
-    router.push('/artworks')
+    setSavedOk(true)
   }
 
   function handleDelete() {
@@ -116,6 +117,42 @@ export default function ArtworkForm({ id }: Props) {
   }
 
   const artwork = id ? getArtworkById(id) : null
+
+  if (savedOk) {
+    return (
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white rounded-xl border border-slate-200 p-8 text-center">
+          <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+            <span className="text-green-600 text-xl font-bold">✓</span>
+          </div>
+          <h2 className="text-lg font-bold text-slate-900 mb-1">
+            {isEdit ? '作品を更新しました' : '作品を保存しました'}
+          </h2>
+          <p className="text-sm text-slate-500 mb-6">次のステップに進みましょう</p>
+          <div className="flex flex-col gap-3 max-w-xs mx-auto">
+            <Link
+              href="/analysis"
+              className="block px-5 py-3 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition-colors"
+            >
+              AIマーケティング分析へ →
+            </Link>
+            <Link
+              href="/content"
+              className="block px-5 py-3 text-sm font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition-colors"
+            >
+              コンテンツを生成する →
+            </Link>
+            <Link
+              href="/artworks"
+              className="block px-5 py-3 text-sm font-medium text-slate-600 hover:text-slate-900 border border-slate-200 rounded-xl transition-colors"
+            >
+              ← 作品一覧に戻る
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="max-w-2xl mx-auto">

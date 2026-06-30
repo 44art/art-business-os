@@ -87,9 +87,9 @@ function sourceName(source: Source): string {
 }
 
 function sourceStrengths(source: Source): string {
-  if ('strengths' in source) return (source as Brand).strengths
-  if ('features' in source) return (source as Artwork).features
-  if ('description' in source) return (source as Workshop).description
+  if ('strengths' in source) return (source as Brand).strengths || ''
+  if ('features' in source) return (source as Artwork).features || ''
+  if ('description' in source) return (source as Workshop).description || ''
   return ''
 }
 

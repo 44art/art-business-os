@@ -139,9 +139,23 @@ export default function PersonasPage() {
           {/* 次のステップ案内 */}
           <div className="mt-8 bg-indigo-50 border border-indigo-200 rounded-xl p-5">
             <p className="text-sm font-semibold text-indigo-900 mb-1">次のステップ：コンテンツ生成</p>
-            <p className="text-xs text-indigo-700">
-              保存したペルソナをもとに、SNS投稿文・告知文・販売導線用文章を生成できます（実装予定）
+            <p className="text-xs text-indigo-700 mb-3">
+              保存したペルソナをもとに、SNS投稿文・告知文・販売導線用文章を生成できます
             </p>
+            <div className="flex flex-wrap gap-2">
+              <Link
+                href="/content"
+                className="inline-block px-4 py-2 text-xs font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors"
+              >
+                コンテンツを生成する →
+              </Link>
+              <Link
+                href="/analysis"
+                className="inline-block px-4 py-2 text-xs font-medium text-indigo-700 bg-white hover:bg-indigo-50 border border-indigo-200 rounded-lg transition-colors"
+              >
+                AIマーケティング分析へ →
+              </Link>
+            </div>
           </div>
         </>
       )}

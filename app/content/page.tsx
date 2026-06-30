@@ -384,9 +384,12 @@ export default function ContentPage() {
         {savedDrafts.length > 0 && (
           <div className="mt-6 bg-amber-50 border border-amber-200 rounded-xl p-5">
             <p className="text-sm font-semibold text-amber-900 mb-1">次のステップ：LP作成支援</p>
-            <p className="text-xs text-amber-700">
-              保存したコンテンツ（特にLP導入文）とペルソナ情報をもとに、LP全体の構成案・見出し・本文を作成できます（実装予定）
+            <p className="text-xs text-amber-700 mb-3">
+              保存したコンテンツ（特にLP導入文）とペルソナ情報をもとに、LP全体の構成案・見出し・本文を作成できます
             </p>
+            <a href="/lp" className="inline-block text-xs font-medium text-white bg-amber-600 hover:bg-amber-700 px-4 py-2 rounded-lg transition-colors">
+              LP作成支援へ →
+            </a>
           </div>
         )}
       </div>
