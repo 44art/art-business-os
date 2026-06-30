@@ -256,3 +256,28 @@ export function updateConsultantReport(id: string, data: Partial<ConsultantRepor
 export function deleteConsultantReport(id: string): void {
   write(KEYS.consultantReports, getConsultantReports().filter((r) => r.id !== id))
 }
+
+// ─── 関連データ取得ユーティリティ ────────────────────────
+
+export function getRelatedDataForSource(
+  sourceType: 'brand' | 'artwork' | 'workshop',
+  sourceId: string
+): {
+  personas: import('@/types').Persona[]
+  contentDrafts: import('@/types').ContentDraft[]
+  lpDrafts: import('@/types').LandingPageDraft[]
+  lineDrafts: import('@/types').LineStrategyDraft[]
+  snsDrafts: import('@/types').SnsStrategyDraft[]
+} {
+  const personas = getPersonas().filter(
+    (p) => p.sourceType === sourceType && p.sourceId === sourceId
+  )
+  const personaIds = personas.map((p) => p.id)
+  return {
+    personas,
+    contentDrafts: getContentDrafts().filter((c) => personaIds.includes(c.personaId)),
+    lpDrafts: getLpDrafts().filter((l) => personaIds.includes(l.personaId)),
+    lineDrafts: getLineDrafts().filter((l) => personaIds.includes(l.personaId)),
+    snsDrafts: getSnsDrafts().filter((s) => personaIds.includes(s.personaId)),
+  }
+}

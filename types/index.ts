@@ -187,6 +187,7 @@ export type LandingPageDraft = {
   sourceName: string
   // 参照コンテンツ（任意）
   referencedContentId?: string
+  referencedContentName?: string  // 表示用（Phase4追加）
   // LP設定
   goal: LpGoal
   goalLabel: string
@@ -228,7 +229,9 @@ export type LineStrategyDraft = {
   sourceName: string
   // 参照データ（任意）
   referencedContentId?: string
+  referencedContentName?: string  // 表示用（Phase4追加）
   referencedLpId?: string
+  referencedLpName?: string       // 表示用（Phase4追加）
   // LINE設定
   goal: LineGoal
   goalLabel: string
@@ -261,6 +264,15 @@ export type ConsultantReport = {
   sourceType: 'brand' | 'artwork' | 'workshop'
   sourceId: string
   sourceName: string
+  // 診断に使用した関連データ（Phase4追加 - 旧データは undefined）
+  personaIds?: string[]
+  personaNames?: string[]
+  relatedDataSummary?: {
+    content: number
+    lp: number
+    line: number
+    sns: number
+  }
   // フェーズ別診断（4フェーズ）
   phases: ConsultantPhaseItem[]
   // 全体診断
@@ -329,8 +341,11 @@ export type SnsStrategyDraft = {
   sourceName: string
   // 参照データ（任意）
   referencedContentId?: string
+  referencedContentName?: string  // 表示用（Phase4追加）
   referencedLpId?: string
+  referencedLpName?: string       // 表示用（Phase4追加）
   referencedLineId?: string
+  referencedLineName?: string     // 表示用（Phase4追加）
   // SNS設定
   goal: SnsStrategyGoal
   goalLabel: string

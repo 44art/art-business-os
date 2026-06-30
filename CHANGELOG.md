@@ -1,5 +1,59 @@
 # CHANGELOG
 
+## Phase4 — 保存済みデータの紐づき強化と再利用性改善（2026-06-30）
+
+### 型定義の拡張（旧データと後方互換）
+
+#### `LandingPageDraft`
+- `referencedContentName?: string` 追加 — 参照したコンテンツ種別名を保持
+
+#### `LineStrategyDraft`
+- `referencedContentName?: string` 追加 — 参照したコンテンツ種別名を保持
+- `referencedLpName?: string` 追加 — 参照したLP案の目的ラベルを保持
+
+#### `SnsStrategyDraft`
+- `referencedContentName?: string` 追加
+- `referencedLpName?: string` 追加
+- `referencedLineName?: string` 追加 — 参照したLINE活用案の目的ラベルを保持
+
+#### `ConsultantReport`
+- `personaIds?: string[]` 追加 — 診断に使用したペルソナIDを記録
+- `personaNames?: string[]` 追加 — 診断に使用したペルソナ名を記録（一覧表示用）
+- `relatedDataSummary?: { content, lp, line, sns }` 追加 — 使用した関連データ件数を記録
+
+### `lib/storage.ts`
+- `getRelatedDataForSource(sourceType, sourceId)` 追加
+  - 指定ソースに紐づくペルソナ・コンテンツ・LP・LINE・SNS戦略を一括取得するユーティリティ
+  - AIコンサルタント・ダッシュボード・将来の横断表示に再利用可能
+
+### 生成ページの更新（参照名を保存するよう変更）
+
+#### `app/lp/page.tsx`
+- LP案生成時に `referencedContentName` を自動設定
+
+#### `app/line/page.tsx`
+- LINE活用案生成時に `referencedContentName`・`referencedLpName` を自動設定
+
+#### `app/sns-strategy/page.tsx`
+- SNS戦略案生成時に `referencedContentName`・`referencedLpName`・`referencedLineName` を自動設定
+- ラベルマップ定数 `CONTENT_TYPE_LABEL` / `LP_GOAL_LABEL` / `LINE_GOAL_LABEL` を追加
+
+#### `app/consultant/page.tsx`
+- 診断生成時に `personaIds`・`personaNames`・`relatedDataSummary` を自動設定
+
+### 保存済み一覧の表示改善（関連元名を表示）
+
+- **LP案一覧**: 参照コンテンツ種別名をバッジ表示
+- **LINE活用案一覧**: 参照コンテンツ名・LP案名をバッジ表示
+- **SNS戦略案一覧**: 参照コンテンツ名・LP案名・LINE活用案名をバッジ表示
+- **AIコンサルタント診断レポート一覧**: 紐づくペルソナ名（バッジ）と関連データ件数を表示
+
+### 後方互換性
+- 新フィールドはすべて `optional`（`?`）なので旧データが undefined でも画面が壊れない
+- 表示部は `&&` ガードで旧データを安全にスキップ
+
+---
+
 ## Phase3 — 入力・出力・導線の実用性改善（2026-06-30）
 
 ### Phase3-A：入力画面の使いやすさ改善

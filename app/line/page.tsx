@@ -117,7 +117,13 @@ export default function LinePage() {
       sourceId: persona.sourceId,
       sourceName: persona.sourceName,
       referencedContentId: selectedContentId ?? undefined,
+      referencedContentName: referencedContent
+        ? (CONTENT_TYPE_LABEL[referencedContent.contentType] ?? undefined)
+        : undefined,
       referencedLpId: selectedLpId ?? undefined,
+      referencedLpName: referencedLp
+        ? (LP_GOAL_LABEL[referencedLp.goal] ?? referencedLp.goalLabel)
+        : undefined,
       goal: selectedGoal,
       goalLabel: LINE_GOAL_CONFIG[selectedGoal].label,
       lineRegistrationUrl: referencedLp?.lineRegistrationUrl || '',
@@ -575,6 +581,18 @@ export default function LinePage() {
                           {registerSection.content.split('\n')[0].slice(0, 60)}
                         </p>
                       )}
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {lineDraft.referencedContentName && (
+                          <span className="text-xs bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded-full">
+                            コンテンツ：{lineDraft.referencedContentName}
+                          </span>
+                        )}
+                        {lineDraft.referencedLpName && (
+                          <span className="text-xs bg-amber-50 text-amber-600 px-1.5 py-0.5 rounded-full">
+                            LP：{lineDraft.referencedLpName}
+                          </span>
+                        )}
+                      </div>
                       {lineDraft.lineRegistrationUrl && (
                         <p className="text-xs text-green-600 mt-0.5">LINE URL: {lineDraft.lineRegistrationUrl}</p>
                       )}

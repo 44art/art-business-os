@@ -234,7 +234,18 @@ export default function ConsultantPage() {
         lineDrafts: relLine,
         snsDrafts: relSns,
       })
-      setReport(result)
+      const enriched: ConsultantReport = {
+        ...result,
+        personaIds: relatedPersonas.map((p) => p.id),
+        personaNames: relatedPersonas.map((p) => p.name),
+        relatedDataSummary: {
+          content: relContent.length,
+          lp: relLp.length,
+          line: relLine.length,
+          sns: relSns.length,
+        },
+      }
+      setReport(enriched)
       setEditingOverall({})
       setIsGenerating(false)
     }, 400)
@@ -611,11 +622,30 @@ export default function ConsultantPage() {
             {reports.map((r) => (
               <div key={r.id} className="border border-gray-200 rounded-lg overflow-hidden">
                 <div className="flex items-center justify-between p-3">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full font-medium">
-                      {sourceTypeLabel(r.sourceType)}: {r.sourceName}
-                    </span>
-                    <span className="text-xs text-gray-400">{fmtDate(r.updatedAt)}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap mb-1">
+                      <span className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full font-medium">
+                        {sourceTypeLabel(r.sourceType)}: {r.sourceName}
+                      </span>
+                      <span className="text-xs text-gray-400">{fmtDate(r.updatedAt)}</span>
+                    </div>
+                    {r.personaNames && r.personaNames.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mb-1">
+                        {r.personaNames.map((name, i) => (
+                          <span key={i} className="text-xs bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded-full">
+                            {name}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    {r.relatedDataSummary && (
+                      <div className="flex gap-2 text-xs text-gray-400">
+                        <span>コンテンツ {r.relatedDataSummary.content}件</span>
+                        <span>LP {r.relatedDataSummary.lp}件</span>
+                        <span>LINE {r.relatedDataSummary.line}件</span>
+                        <span>SNS {r.relatedDataSummary.sns}件</span>
+                      </div>
+                    )}
                   </div>
                   <div className="flex items-center gap-2">
                     <button

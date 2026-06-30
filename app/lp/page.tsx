@@ -105,6 +105,9 @@ export default function LpPage() {
       sourceId: persona.sourceId,
       sourceName: persona.sourceName,
       referencedContentId: selectedContentId ?? undefined,
+      referencedContentName: referencedContent?.contentType
+        ? (CONTENT_TYPE_LABEL[referencedContent.contentType] ?? undefined)
+        : undefined,
       goal: selectedGoal,
       goalLabel: LP_GOAL_CONFIG[selectedGoal].label,
       sections: generated,
@@ -487,6 +490,11 @@ export default function LpPage() {
                         </p>
                       )}
                       <p className="text-xs text-slate-400">素材：{lp.sourceName}</p>
+                      {lp.referencedContentName && (
+                        <span className="inline-block text-xs bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded-full mt-1">
+                          参照：{lp.referencedContentName}
+                        </span>
+                      )}
                     </div>
                     <div className="flex-shrink-0 flex flex-col gap-1.5">
                       <button

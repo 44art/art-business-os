@@ -46,6 +46,21 @@ const PHASE_LABEL: Record<string, string> = {
   awareness: '認知', acquisition: '集客', sales: '販売', retention: '継続',
 }
 
+const CONTENT_TYPE_LABEL: Record<string, string> = {
+  sns_post: 'SNS投稿', ws_announce: 'WS告知文',
+  artwork_sales: '作品販売文', line_message: 'LINE配信文', lp_intro: 'LP導入文',
+}
+
+const LP_GOAL_LABEL: Record<string, string> = {
+  artwork_sales: '作品販売LP', ws_booking: 'WS予約LP',
+  inquiry: '問い合わせLP', line_register: 'LINE登録LP', awareness: '認知拡大LP',
+}
+
+const LINE_GOAL_LABEL: Record<string, string> = {
+  ws_booking: 'WS予約LINE', artwork_sales: '作品販売LINE',
+  inquiry: '問い合わせLINE', repeat: 'リピーターLINE', fan: 'ファン化LINE',
+}
+
 // ─── ユーティリティ ───────────────────────────────────────
 
 function makeId() {
@@ -146,8 +161,17 @@ export default function SnsStrategyPage() {
         sourceId: persona.sourceId,
         sourceName: persona.sourceName,
         referencedContentId: selectedContentId || undefined,
+        referencedContentName: referencedContent
+          ? (CONTENT_TYPE_LABEL[referencedContent.contentType] ?? undefined)
+          : undefined,
         referencedLpId: selectedLpId || undefined,
+        referencedLpName: referencedLp
+          ? (LP_GOAL_LABEL[referencedLp.goal] ?? referencedLp.goalLabel)
+          : undefined,
         referencedLineId: selectedLineId || undefined,
+        referencedLineName: referencedLine
+          ? (LINE_GOAL_LABEL[referencedLine.goal] ?? referencedLine.goalLabel)
+          : undefined,
         goal: selectedGoal,
         goalLabel: SNS_GOAL_CONFIG[selectedGoal].label,
         platforms: selectedPlatforms,
@@ -634,6 +658,21 @@ export default function SnsStrategyPage() {
                       </span>
                     ))}
                     <span className="text-xs text-gray-500">{draft.personaName}</span>
+                    {draft.referencedContentName && (
+                      <span className="text-xs bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded-full">
+                        {draft.referencedContentName}
+                      </span>
+                    )}
+                    {draft.referencedLpName && (
+                      <span className="text-xs bg-amber-50 text-amber-600 px-1.5 py-0.5 rounded-full">
+                        {draft.referencedLpName}
+                      </span>
+                    )}
+                    {draft.referencedLineName && (
+                      <span className="text-xs bg-green-50 text-green-600 px-1.5 py-0.5 rounded-full">
+                        {draft.referencedLineName}
+                      </span>
+                    )}
                     <span className="text-xs text-gray-400">{fmtDate(draft.updatedAt)}</span>
                   </div>
                   <div className="flex items-center gap-2">
