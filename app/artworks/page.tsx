@@ -107,6 +107,27 @@ export default function ArtworksPage() {
               <span className="flex-shrink-0 text-slate-400 group-hover:text-indigo-500 text-sm mt-0.5">編集 →</span>
             </Link>
           ))}
+          <div className="mt-4 bg-blue-50 border border-blue-200 rounded-xl p-5">
+            <p className="text-sm font-semibold text-blue-900 mb-1">次のステップ：AIマーケティング分析</p>
+            <p className="text-xs text-blue-700 mb-3">
+              登録した作品をもとに、認知・販売フェーズの課題と改善施策をAIが分析します。
+              分析後にペルソナを作成すると、コンテンツ・LP・SNS戦略を生成できます。
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <Link
+                href="/analysis"
+                className="text-xs font-medium px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                AIマーケティング分析へ →
+              </Link>
+              <Link
+                href="/personas/new"
+                className="text-xs font-medium px-3 py-1.5 bg-white text-blue-700 border border-blue-300 rounded-lg hover:bg-blue-50 transition-colors"
+              >
+                ペルソナを作成する →
+              </Link>
+            </div>
+          </div>
         </div>
       )}
     </div>

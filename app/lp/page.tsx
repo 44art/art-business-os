@@ -236,7 +236,7 @@ export default function LpPage() {
         {/* ペルソナ選択 */}
         <StepLabel n={1} label="ペルソナを選ぶ" />
         {personas.length === 0 ? (
-          <NoDataHint href="/personas/new" label="ペルソナを先に作成してください" />
+          <PrerequisiteGate hasSources={!!(brand || artworks.length > 0 || workshops.length > 0)} />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-6">
             {personas.map((p) => (
@@ -631,6 +631,38 @@ function StepLabel({ n, label }: { n: number; label: string }) {
         {n}
       </span>
       <h2 className="font-semibold text-slate-900">{label}</h2>
+    </div>
+  )
+}
+
+function PrerequisiteGate({ hasSources }: { hasSources: boolean }) {
+  if (!hasSources) {
+    return (
+      <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-6">
+        <p className="text-sm font-semibold text-amber-900 mb-1">まず素材を登録してください</p>
+        <p className="text-xs text-amber-700 mb-3">
+          LP作成には「素材登録 → ペルソナ作成」の順で準備が必要です。
+          ブランド・作品・WSのいずれかを登録してから、ペルソナを作成してください。
+        </p>
+        <div className="flex flex-wrap gap-2">
+          <a href="/brand" className="text-xs font-medium px-3 py-1.5 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">ブランドを登録 →</a>
+          <a href="/artworks/new" className="text-xs font-medium px-3 py-1.5 bg-white text-amber-700 border border-amber-300 rounded-lg hover:bg-amber-50 transition-colors">作品を登録 →</a>
+          <a href="/workshops/new" className="text-xs font-medium px-3 py-1.5 bg-white text-amber-700 border border-amber-300 rounded-lg hover:bg-amber-50 transition-colors">WSを登録 →</a>
+        </div>
+      </div>
+    )
+  }
+  return (
+    <div className="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-6">
+      <p className="text-sm font-semibold text-blue-900 mb-1">ペルソナを作成してください</p>
+      <p className="text-xs text-blue-700 mb-3">
+        素材の登録が確認できました。次に「ペルソナ」を作成するとLP生成が使えるようになります。
+        AIマーケティング分析からペルソナを自動生成することもできます。
+      </p>
+      <div className="flex flex-wrap gap-2">
+        <a href="/personas/new" className="text-xs font-medium px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">ペルソナを作成 →</a>
+        <a href="/analysis" className="text-xs font-medium px-3 py-1.5 bg-white text-blue-700 border border-blue-300 rounded-lg hover:bg-blue-50 transition-colors">AI分析からペルソナを生成 →</a>
+      </div>
     </div>
   )
 }

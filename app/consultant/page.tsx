@@ -353,6 +353,22 @@ export default function ConsultantPage() {
         </p>
       </div>
 
+      {/* 素材未登録ガイド */}
+      {!brand && artworks.length === 0 && workshops.length === 0 && (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
+          <p className="text-sm font-semibold text-amber-900 mb-1">まず診断対象の素材を登録してください</p>
+          <p className="text-xs text-amber-700 mb-3">
+            AIコンサルタントの診断には、ブランド・作品・WSのいずれかの登録が必要です。
+            素材を登録すると、認知→集客→販売→リピーター化の全フェーズを診断できます。
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <a href="/brand" className="text-xs font-medium px-3 py-1.5 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">ブランドを登録 →</a>
+            <a href="/artworks/new" className="text-xs font-medium px-3 py-1.5 bg-white text-amber-700 border border-amber-300 rounded-lg hover:bg-amber-50 transition-colors">作品を登録 →</a>
+            <a href="/workshops/new" className="text-xs font-medium px-3 py-1.5 bg-white text-amber-700 border border-amber-300 rounded-lg hover:bg-amber-50 transition-colors">WSを登録 →</a>
+          </div>
+        </div>
+      )}
+
       {/* STEP 1: 診断対象選択 */}
       <section className="bg-white rounded-xl border border-gray-200 p-5">
         <h2 className="font-semibold text-gray-800 mb-3">STEP 1 診断対象を選択</h2>

@@ -377,38 +377,50 @@ export default function DashboardPage() {
 
       {/* ─── 初回スタートガイド ───────────────────────── */}
       {!isStarted && (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-4">
-          <p className="text-sm font-semibold text-amber-800 mb-2">まず最初にやること</p>
-          <ol className="space-y-2 text-sm text-amber-700 list-decimal list-inside">
-            <li>
-              <Link href="/brand" className="underline hover:text-amber-900 font-medium">
-                ブランド管理
-              </Link>
-              でコンセプト・強みを登録する
-            </li>
-            <li>
-              <Link href="/artworks/new" className="underline hover:text-amber-900 font-medium">
-                作品
-              </Link>
-              または
-              <Link href="/workshops/new" className="underline hover:text-amber-900 font-medium ml-1">
-                ワークショップ
-              </Link>
-              を登録する
-            </li>
-            <li>
-              <Link href="/analysis" className="underline hover:text-amber-900 font-medium">
-                AIマーケティング分析
-              </Link>
-              で現状の課題を確認する
-            </li>
-            <li>
-              <Link href="/personas/new" className="underline hover:text-amber-900 font-medium">
-                ペルソナ作成
-              </Link>
-              でターゲット顧客像を定義する
-            </li>
-          </ol>
+        <div className="bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-200 rounded-xl p-6">
+          <p className="text-base font-bold text-indigo-900 mb-1">はじめての方へ：マーケ導線を最短3ステップで作れます</p>
+          <p className="text-xs text-indigo-700 mb-5">
+            このシステムは「認知 → 集客 → 販売 → リピーター化」の全フェーズをAIがサポートします。
+            まず素材を登録するだけで始められます。
+          </p>
+          <div className="grid gap-3">
+            <div className="bg-white rounded-xl border border-indigo-200 p-4">
+              <div className="flex items-start gap-3">
+                <span className="w-7 h-7 bg-indigo-600 text-white text-xs font-bold rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+                <div className="flex-1">
+                  <p className="font-semibold text-sm text-indigo-900 mb-1">素材を登録する</p>
+                  <p className="text-xs text-slate-500 mb-2">ブランドコンセプト・作品・WSを登録するとAIの分析素材になります</p>
+                  <div className="flex flex-wrap gap-2">
+                    <Link href="/brand" className="text-xs font-medium text-indigo-700 underline hover:text-indigo-900">ブランドを登録 →</Link>
+                    <Link href="/artworks/new" className="text-xs font-medium text-indigo-700 underline hover:text-indigo-900">作品を登録 →</Link>
+                    <Link href="/workshops/new" className="text-xs font-medium text-indigo-700 underline hover:text-indigo-900">WSを登録 →</Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white rounded-xl border border-slate-200 p-4">
+              <div className="flex items-start gap-3">
+                <span className="w-7 h-7 bg-slate-300 text-white text-xs font-bold rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+                <div className="flex-1">
+                  <p className="font-semibold text-sm text-slate-600 mb-1">AI分析でペルソナを作成する</p>
+                  <p className="text-xs text-slate-400 mb-2">AIマーケティング分析で課題を把握し、ターゲット顧客像（ペルソナ）を定義します</p>
+                  <div className="flex flex-wrap gap-2">
+                    <Link href="/analysis" className="text-xs font-medium text-slate-500 underline hover:text-slate-700">AI分析へ →</Link>
+                    <Link href="/personas/new" className="text-xs font-medium text-slate-500 underline hover:text-slate-700">ペルソナ作成 →</Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white rounded-xl border border-slate-200 p-4 opacity-60">
+              <div className="flex items-start gap-3">
+                <span className="w-7 h-7 bg-slate-200 text-slate-400 text-xs font-bold rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
+                <div>
+                  <p className="font-semibold text-sm text-slate-400 mb-1">コンテンツ・LP・LINE・SNS戦略を生成する</p>
+                  <p className="text-xs text-slate-400">ペルソナを作成すると、全マーケ施策のたたき台をAIが生成できるようになります</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
