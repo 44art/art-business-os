@@ -730,6 +730,22 @@ export default function ConsultantPage() {
                         </div>
                         <p className="text-gray-700 whitespace-pre-wrap">{r.quickWin}</p>
                       </div>
+                      {r.activeFlows && r.activeFlows.length > 0 && (
+                        <div className="bg-teal-50 rounded p-2">
+                          <div className="flex items-center justify-between mb-0.5">
+                            <p className="text-teal-600 font-semibold">今すぐ使える導線</p>
+                            <CopyButton text={r.activeFlows.join('\n')} label="一括コピー" />
+                          </div>
+                          <ul className="text-gray-700 space-y-0.5">
+                            {r.activeFlows.map((flow, i) => (
+                              <li key={i} className="flex items-start gap-1">
+                                <span className="text-teal-400 flex-shrink-0">→</span>
+                                {flow}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                       {r.contentIdeas && r.contentIdeas.length > 0 && (
                         <div className="bg-blue-50 rounded p-2">
                           <div className="flex items-center justify-between mb-0.5">

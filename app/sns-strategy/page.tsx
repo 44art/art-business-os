@@ -764,18 +764,23 @@ export default function SnsStrategyPage() {
                 {expandedDraftId === draft.id && (
                   <div className="border-t border-gray-100 px-4 py-3 space-y-3">
                     {/* 引き継ぎデータ */}
-                    <div className="bg-purple-50 rounded p-2 text-xs grid grid-cols-3 gap-2">
-                      <div>
-                        <p className="text-purple-400">フェーズ</p>
-                        <p className="font-medium text-purple-700">{PHASE_LABEL[draft.marketingPhaseLink]}</p>
+                    <div className="bg-purple-50 rounded p-2 text-xs space-y-2">
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <p className="text-purple-400">フェーズ</p>
+                          <p className="font-medium text-purple-700">{PHASE_LABEL[draft.marketingPhaseLink]}</p>
+                        </div>
+                        <div>
+                          <p className="text-purple-400">週間投稿</p>
+                          <p className="font-medium text-purple-700">{draft.weeklyPostCount}件</p>
+                        </div>
                       </div>
                       <div>
-                        <p className="text-purple-400">週間投稿</p>
-                        <p className="font-medium text-purple-700">{draft.weeklyPostCount}件</p>
-                      </div>
-                      <div>
-                        <p className="text-purple-400">主要CTA</p>
-                        <p className="font-medium text-purple-700">{draft.primaryCta}</p>
+                        <div className="flex items-center justify-between">
+                          <p className="text-purple-400">主要CTA</p>
+                          <CopyButton text={draft.primaryCta} />
+                        </div>
+                        <p className="font-medium text-purple-700 mt-0.5">{draft.primaryCta}</p>
                       </div>
                     </div>
                     {/* 全セクション */}

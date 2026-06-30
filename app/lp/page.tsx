@@ -555,12 +555,20 @@ export default function LpPage() {
                     </div>
                   </div>
 
-                  <button
-                    onClick={() => setExpandedLpId(isExpanded ? null : lp.id)}
-                    className="mt-2 text-xs text-slate-400 hover:text-indigo-600 underline"
-                  >
-                    {isExpanded ? '折り畳む' : '全セクションを見る'}
-                  </button>
+                  <div className="flex items-center gap-3 mt-2">
+                    <button
+                      onClick={() => setExpandedLpId(isExpanded ? null : lp.id)}
+                      className="text-xs text-slate-400 hover:text-indigo-600 underline"
+                    >
+                      {isExpanded ? '折り畳む' : '全セクションを見る'}
+                    </button>
+                    {isExpanded && (
+                      <CopyButton
+                        text={lp.sections.map((s) => `【${s.label}】\n${s.content}`).join('\n\n') + (lp.lineCtaText ? `\n\n【LINE誘導文】\n${lp.lineCtaText}` : '')}
+                        label="全文コピー"
+                      />
+                    )}
+                  </div>
 
                   {isExpanded && (
                     <div className="mt-4 space-y-3">

@@ -484,15 +484,8 @@ function SavedDraftCard({
   onUpdateStatus: (status: UsageStatus) => void
 }) {
   const [expanded, setExpanded] = useState(false)
-  const [copied, setCopied] = useState(false)
   const cfg = CONTENT_TYPE_CONFIG[draft.contentType]
-
-  function handleCopy() {
-    navigator.clipboard.writeText(draft.content).then(() => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    }).catch(() => {})
-  }
+  const copyText = draft.content + (draft.hashtags.length > 0 ? '\n\n' + draft.hashtags.join(' ') : '')
 
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-5">
@@ -538,16 +531,7 @@ function SavedDraftCard({
         </div>
 
         <div className="flex-shrink-0 flex flex-col gap-1.5">
-          <button
-            onClick={handleCopy}
-            className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-colors ${
-              copied
-                ? 'bg-green-100 text-green-700'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-            }`}
-          >
-            {copied ? 'コピー済' : 'コピー'}
-          </button>
+          <CopyButton text={copyText} />
           <button
             onClick={onReedit}
             className="text-xs px-3 py-1.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg font-medium transition-colors"
