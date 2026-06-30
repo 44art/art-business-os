@@ -1,14 +1,33 @@
-import type { Brand, Artwork, Workshop, Persona } from '@/types'
+import type {
+  Brand, Artwork, Workshop, Persona,
+  ContentDraft, LandingPageDraft, LineStrategyDraft, SnsStrategyDraft,
+} from '@/types'
 import {
   getBrand, saveBrand,
   getArtworks, saveArtwork,
   getWorkshops, saveWorkshop,
   getPersonas, savePersona,
+  getContentDrafts, saveContentDraft,
+  getLpDrafts, saveLpDraft,
+  getLineDrafts, saveLineDraft,
+  getSnsDrafts, saveSnsDraft,
+  getConsultantReports, saveConsultantReport,
 } from '@/lib/storage'
+import { generateContentDraft } from '@/lib/content'
+import { generateLpSections, LP_GOAL_CONFIG } from '@/lib/lp'
+import { generateLineSections, LINE_GOAL_CONFIG } from '@/lib/line'
+import { generateSnsSections, SNS_GOAL_CONFIG } from '@/lib/sns'
+import { generateConsultantReport } from '@/lib/consultant'
+
+// ─── 定数 ────────────────────────────────────────────────
+
+const SAMPLE_LOADED_KEY = 'abo_sample_loaded'
 
 function makeId(prefix: string): string {
   return `${prefix}_sample_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`
 }
+
+// ─── 型定義 ──────────────────────────────────────────────
 
 export type SampleLoadResult = {
   brandAdded: boolean
@@ -17,9 +36,31 @@ export type SampleLoadResult = {
   personasAdded: number
 }
 
+export type SampleAllResult = SampleLoadResult & {
+  contentsAdded: number
+  lpAdded: number
+  lineAdded: number
+  snsAdded: number
+  consultantAdded: boolean
+}
+
+// ─── ヘルパー ─────────────────────────────────────────────
+
+export function isSampleLoaded(): boolean {
+  if (typeof window === 'undefined') return false
+  return localStorage.getItem(SAMPLE_LOADED_KEY) === '1'
+}
+
+export function clearSampleFlag(): void {
+  if (typeof window === 'undefined') return
+  localStorage.removeItem(SAMPLE_LOADED_KEY)
+}
+
+// ─── ブランド・作品・WS・ペルソナのサンプルデータ ─────────
+
 /**
- * サンプルデータを追加する。
- * 各データ種別が既に存在する場合はスキップ（上書きしない）。
+ * ブランド・作品・WS・ペルソナのサンプルデータを追加する。
+ * 既に存在する場合はスキップ（上書きしない）。
  */
 export function loadSampleData(): SampleLoadResult {
   const now = new Date().toISOString()
@@ -209,6 +250,270 @@ export function loadSampleData(): SampleLoadResult {
       savePersona(persona2)
       result.personasAdded++
     }
+  }
+
+  return result
+}
+
+// ─── 生成結果まで含む全サンプルを追加 ─────────────────────
+
+/**
+ * ブランド・作品・WS・ペルソナに加えて、
+ * コンテンツ・LP・LINE・SNS・コンサルタントのサンプル生成結果を追加する。
+ * 既に存在するカテゴリはスキップ（上書きしない）。
+ */
+export function loadAllSamples(): SampleAllResult {
+  const base = loadSampleData()
+  const now = new Date().toISOString()
+
+  const result: SampleAllResult = {
+    ...base,
+    contentsAdded: 0,
+    lpAdded: 0,
+    lineAdded: 0,
+    snsAdded: 0,
+    consultantAdded: false,
+  }
+
+  const artworks = getArtworks()
+  const workshops = getWorkshops()
+  const personas = getPersonas()
+
+  if (artworks.length === 0 || personas.length === 0) return result
+
+  const artwork1 = artworks[0]
+  const workshop1 = workshops[0] ?? null
+  const persona1 = personas.find((p) => p.sourceType === 'artwork') ?? personas[0]
+  const persona2 = personas.find((p) => p.sourceType === 'workshop') ?? personas[0]
+
+  // ─── コンテンツ ─────────────────────────────────────────
+  const savedContents: ContentDraft[] = []
+
+  if (getContentDrafts().length === 0) {
+    const contentDefs: Array<{
+      contentType: Parameters<typeof generateContentDraft>[0]['contentType']
+      persona: Persona
+      source: Brand | Artwork | Workshop | null
+      sourceType: 'brand' | 'artwork' | 'workshop'
+      sourceId: string
+      sourceName: string
+    }> = [
+      {
+        contentType: 'sns_post',
+        persona: persona1,
+        source: artwork1,
+        sourceType: 'artwork',
+        sourceId: artwork1.id,
+        sourceName: artwork1.title,
+      },
+      ...(workshop1 && persona2
+        ? [{
+            contentType: 'ws_announce' as const,
+            persona: persona2,
+            source: workshop1,
+            sourceType: 'workshop' as const,
+            sourceId: workshop1.id,
+            sourceName: workshop1.title,
+          }]
+        : []),
+      {
+        contentType: 'artwork_sales',
+        persona: persona1,
+        source: artwork1,
+        sourceType: 'artwork',
+        sourceId: artwork1.id,
+        sourceName: artwork1.title,
+      },
+      {
+        contentType: 'lp_intro',
+        persona: persona1,
+        source: artwork1,
+        sourceType: 'artwork',
+        sourceId: artwork1.id,
+        sourceName: artwork1.title,
+      },
+      ...(workshop1 && persona2
+        ? [{
+            contentType: 'line_message' as const,
+            persona: persona2,
+            source: workshop1,
+            sourceType: 'workshop' as const,
+            sourceId: workshop1.id,
+            sourceName: workshop1.title,
+          }]
+        : []),
+    ]
+
+    for (const def of contentDefs) {
+      const out = generateContentDraft({ contentType: def.contentType, persona: def.persona, source: def.source })
+      const draft: ContentDraft = {
+        id: makeId('content'),
+        personaId: def.persona.id,
+        personaName: def.persona.name,
+        sourceType: def.sourceType,
+        sourceId: def.sourceId,
+        sourceName: def.sourceName,
+        ...out,
+        status: 'saved',
+        generatedAt: now,
+        updatedAt: now,
+      }
+      saveContentDraft(draft)
+      savedContents.push(draft)
+      result.contentsAdded++
+    }
+  } else {
+    savedContents.push(...getContentDrafts().slice(0, 5))
+  }
+
+  // ─── LP ─────────────────────────────────────────────────
+  const savedLp: LandingPageDraft[] = []
+
+  if (getLpDrafts().length === 0) {
+    const refContent = savedContents.find((c) => c.contentType === 'lp_intro') ?? savedContents[0] ?? null
+    const lpResult = generateLpSections({
+      goal: 'artwork_sales',
+      persona: persona1,
+      source: artwork1,
+      referencedContent: refContent,
+    })
+    const lpDraft: LandingPageDraft = {
+      id: makeId('lp'),
+      personaId: persona1.id,
+      personaName: persona1.name,
+      sourceType: 'artwork',
+      sourceId: artwork1.id,
+      sourceName: artwork1.title,
+      referencedContentId: refContent?.id,
+      referencedContentName: refContent ? 'LP導入文' : undefined,
+      goal: 'artwork_sales',
+      goalLabel: LP_GOAL_CONFIG.artwork_sales.label,
+      sections: lpResult.sections,
+      lineCtaText: lpResult.lineCtaText,
+      lineRegistrationUrl: '',
+      status: 'saved',
+      generatedAt: now,
+      updatedAt: now,
+    }
+    saveLpDraft(lpDraft)
+    savedLp.push(lpDraft)
+    result.lpAdded++
+  } else {
+    savedLp.push(...getLpDrafts().slice(0, 1))
+  }
+
+  // ─── LINE ────────────────────────────────────────────────
+  const savedLine: LineStrategyDraft[] = []
+
+  if (getLineDrafts().length === 0 && workshop1 && persona2) {
+    const wsAnnounce = savedContents.find((c) => c.contentType === 'ws_announce') ?? null
+    const lineResult = generateLineSections({
+      goal: 'ws_booking',
+      persona: persona2,
+      source: workshop1,
+      referencedContent: wsAnnounce,
+      referencedLp: null,
+    })
+    const lineDraft: LineStrategyDraft = {
+      id: makeId('line'),
+      personaId: persona2.id,
+      personaName: persona2.name,
+      sourceType: 'workshop',
+      sourceId: workshop1.id,
+      sourceName: workshop1.title,
+      referencedContentId: wsAnnounce?.id,
+      referencedContentName: wsAnnounce ? 'WS告知文' : undefined,
+      goal: 'ws_booking',
+      goalLabel: LINE_GOAL_CONFIG.ws_booking.label,
+      lineRegistrationUrl: '',
+      sections: lineResult.sections,
+      recommendedChannels: lineResult.recommendedChannels,
+      snsCtaText: lineResult.snsCtaText,
+      status: 'saved',
+      generatedAt: now,
+      updatedAt: now,
+    }
+    saveLineDraft(lineDraft)
+    savedLine.push(lineDraft)
+    result.lineAdded++
+  } else {
+    savedLine.push(...getLineDrafts().slice(0, 1))
+  }
+
+  // ─── SNS ─────────────────────────────────────────────────
+  const savedSns: SnsStrategyDraft[] = []
+
+  if (getSnsDrafts().length === 0) {
+    const snsResult = generateSnsSections({
+      goal: 'awareness',
+      platforms: ['instagram', 'x'],
+      persona: persona1,
+      source: artwork1,
+      referencedContent: savedContents.find((c) => c.contentType === 'sns_post') ?? null,
+      referencedLp: savedLp[0] ?? null,
+      referencedLine: savedLine[0] ?? null,
+    })
+    const snsDraft: SnsStrategyDraft = {
+      id: makeId('sns'),
+      personaId: persona1.id,
+      personaName: persona1.name,
+      sourceType: 'artwork',
+      sourceId: artwork1.id,
+      sourceName: artwork1.title,
+      referencedContentName: 'SNS投稿文',
+      referencedLpName: savedLp[0] ? LP_GOAL_CONFIG.artwork_sales.label : undefined,
+      goal: 'awareness',
+      goalLabel: SNS_GOAL_CONFIG.awareness.label,
+      platforms: ['instagram', 'x'],
+      sections: snsResult.sections,
+      marketingPhaseLink: snsResult.marketingPhaseLink,
+      weeklyPostCount: snsResult.weeklyPostCount,
+      primaryCta: snsResult.primaryCta,
+      status: 'saved',
+      generatedAt: now,
+      updatedAt: now,
+    }
+    saveSnsDraft(snsDraft)
+    savedSns.push(snsDraft)
+    result.snsAdded++
+  } else {
+    savedSns.push(...getSnsDrafts().slice(0, 1))
+  }
+
+  // ─── AIコンサルタント ────────────────────────────────────
+  if (getConsultantReports().length === 0) {
+    const allContents = getContentDrafts()
+    const allLp = getLpDrafts()
+    const allLine = getLineDrafts()
+    const allSns = getSnsDrafts()
+
+    const report = generateConsultantReport({
+      sourceType: 'artwork',
+      sourceId: artwork1.id,
+      sourceName: artwork1.title,
+      source: artwork1,
+      personas,
+      contentDrafts: allContents,
+      lpDrafts: allLp,
+      lineDrafts: allLine,
+      snsDrafts: allSns,
+    })
+    report.status = 'saved'
+    report.personaIds = personas.map((p) => p.id)
+    report.personaNames = personas.map((p) => p.name)
+    report.relatedDataSummary = {
+      content: allContents.length,
+      lp: allLp.length,
+      line: allLine.length,
+      sns: allSns.length,
+    }
+    saveConsultantReport(report)
+    result.consultantAdded = true
+  }
+
+  // ─── ロード済みフラグ ─────────────────────────────────────
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(SAMPLE_LOADED_KEY, '1')
   }
 
   return result

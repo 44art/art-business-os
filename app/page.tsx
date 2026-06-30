@@ -24,7 +24,7 @@ import {
   getSnsDrafts,
   getConsultantReports,
 } from '@/lib/storage'
-import { loadSampleData } from '@/lib/sampleData'
+import { loadAllSamples, isSampleLoaded } from '@/lib/sampleData'
 
 // ─── 型 ──────────────────────────────────────────────────
 
@@ -270,6 +270,7 @@ function StatusIcon({ status }: { status: PhaseStatus }) {
 export default function DashboardPage() {
   const [data, setData] = useState<DashboardData | null>(null)
   const [sampleMsg, setSampleMsg] = useState('')
+  const [sampleLoaded, setSampleLoaded] = useState(false)
 
   function reloadData() {
     setData({
@@ -285,22 +286,31 @@ export default function DashboardPage() {
     })
   }
 
-  useEffect(() => { reloadData() }, [])
+  useEffect(() => {
+    reloadData()
+    setSampleLoaded(isSampleLoaded())
+  }, [])
 
   function handleLoadSample() {
-    const result = loadSampleData()
+    const result = loadAllSamples()
     reloadData()
+    setSampleLoaded(true)
     const parts: string[] = []
     if (result.brandAdded) parts.push('ブランド')
     if (result.artworksAdded > 0) parts.push(`作品${result.artworksAdded}件`)
     if (result.workshopsAdded > 0) parts.push(`WS${result.workshopsAdded}件`)
     if (result.personasAdded > 0) parts.push(`ペルソナ${result.personasAdded}件`)
+    if (result.contentsAdded > 0) parts.push(`コンテンツ${result.contentsAdded}件`)
+    if (result.lpAdded > 0) parts.push(`LP案${result.lpAdded}件`)
+    if (result.lineAdded > 0) parts.push(`LINE戦略${result.lineAdded}件`)
+    if (result.snsAdded > 0) parts.push(`SNS戦略${result.snsAdded}件`)
+    if (result.consultantAdded) parts.push('AI診断1件')
     if (parts.length > 0) {
       setSampleMsg(`${parts.join('・')}を追加しました`)
     } else {
       setSampleMsg('既にデータが登録されているためスキップしました')
     }
-    setTimeout(() => setSampleMsg(''), 4000)
+    setTimeout(() => setSampleMsg(''), 5000)
   }
 
   if (!data) return null
@@ -464,6 +474,37 @@ export default function DashboardPage() {
               全7ステップ完了！AIコンサルタント診断を定期的に更新してください
             </p>
           )}
+
+          {/* 生成結果がない場合のサンプル追加ボタン */}
+          {!sampleLoaded && data.contentDrafts.length === 0 && (
+            <div className="mt-3 pt-3 border-t border-slate-100">
+              <p className="text-xs text-slate-400 mb-1.5">生成結果の見本を確認したい場合：</p>
+              <button
+                type="button"
+                onClick={handleLoadSample}
+                className="w-full py-2 text-xs font-medium text-slate-600 bg-slate-50 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors"
+              >
+                サンプルデータ＋AI生成結果を追加する
+              </button>
+              <p className="mt-1 text-xs text-slate-400 text-center">既存データは上書きされません</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ─── サンプルデータ表示中バナー ─────────────────── */}
+      {sampleLoaded && !sampleMsg && (
+        <div className="bg-amber-50 border border-amber-300 rounded-xl px-4 py-3 flex items-start justify-between gap-3">
+          <div>
+            <p className="text-sm font-semibold text-amber-800">サンプルデータで動作確認中</p>
+            <p className="text-xs text-amber-700 mt-0.5">
+              KEN ART WORKSのサンプルデータが入っています。各画面でAIの生成結果を確認できます。
+              実際に使い始める際は、各ページから削除してご自身のデータを登録してください。
+            </p>
+          </div>
+          <span className="flex-shrink-0 text-xs bg-amber-200 text-amber-800 font-bold px-2 py-1 rounded-lg">
+            サンプル
+          </span>
         </div>
       )}
 
@@ -519,10 +560,10 @@ export default function DashboardPage() {
               onClick={handleLoadSample}
               className="w-full py-2.5 text-sm font-medium text-indigo-700 bg-white border border-indigo-300 rounded-xl hover:bg-indigo-50 transition-colors"
             >
-              サンプルデータ（スニーカーペイント・箔画）を追加する
+              サンプルデータ＋AI生成結果をすべて追加する
             </button>
             <p className="mt-1.5 text-xs text-indigo-500 text-center">
-              既存データは上書きされません。追加後はすぐにAI機能を試せます。
+              ブランド・作品・WS・ペルソナ・コンテンツ・LP・LINE・SNS・AI診断を一括追加します。既存データは上書きされません。
             </p>
           </div>
         </div>
