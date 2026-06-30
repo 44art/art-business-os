@@ -143,6 +143,20 @@ export default function ContentPage() {
     }, 100)
   }
 
+  // ── 複製 ──
+  function handleDuplicate(draft: ContentDraft) {
+    const now = new Date().toISOString()
+    const copy: ContentDraft = {
+      ...draft,
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      status: 'draft',
+      generatedAt: now,
+      updatedAt: now,
+    }
+    saveContentDraft(copy)
+    setSavedDrafts(getContentDrafts())
+  }
+
   const selectedPersona = personas.find((p) => p.id === selectedPersonaId) ?? null
   const filteredDrafts = filterPhase
     ? savedDrafts.filter((d) => d.phaseLink === filterPhase)
@@ -374,6 +388,7 @@ export default function ContentPage() {
                 key={draft.id}
                 draft={draft}
                 onReedit={() => handleReedit(draft)}
+                onDuplicate={() => handleDuplicate(draft)}
                 onDelete={() => handleDeleteDraft(draft.id)}
               />
             ))}
@@ -435,17 +450,37 @@ function ContextCard({ label, value }: { label: string; value: string }) {
   )
 }
 
+function fmtDate(iso: string) {
+  return new Date(iso).toLocaleDateString('ja-JP', { month: 'short', day: 'numeric' })
+}
+
+function sourceHref(sourceType: string, sourceId: string): string {
+  if (sourceType === 'brand') return '/brand'
+  if (sourceType === 'artwork') return `/artworks/${sourceId}/edit`
+  return `/workshops/${sourceId}/edit`
+}
+
 function SavedDraftCard({
   draft,
   onReedit,
+  onDuplicate,
   onDelete,
 }: {
   draft: ContentDraft
   onReedit: () => void
+  onDuplicate: () => void
   onDelete: () => void
 }) {
   const [expanded, setExpanded] = useState(false)
+  const [copied, setCopied] = useState(false)
   const cfg = CONTENT_TYPE_CONFIG[draft.contentType]
+
+  function handleCopy() {
+    navigator.clipboard.writeText(draft.content).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    }).catch(() => {})
+  }
 
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-5">
@@ -456,9 +491,23 @@ function SavedDraftCard({
               {PHASE_LABEL[draft.phaseLink]}
             </span>
             <span className="text-xs font-medium text-slate-700">{cfg.label}</span>
-            <span className="text-xs text-slate-400">ペルソナ：{draft.personaName}</span>
+            <span className="text-xs text-slate-400">{fmtDate(draft.updatedAt)}</span>
           </div>
-          <p className="text-xs text-slate-400 mb-2">素材：{draft.sourceName}</p>
+          <div className="flex items-center gap-2 mb-2 flex-wrap">
+            <a
+              href={`/personas/${draft.personaId}/edit`}
+              className="text-xs text-indigo-600 hover:underline"
+            >
+              ペルソナ：{draft.personaName} →
+            </a>
+            <span className="text-slate-300">|</span>
+            <a
+              href={sourceHref(draft.sourceType, draft.sourceId)}
+              className="text-xs text-slate-500 hover:underline"
+            >
+              {SOURCE_TYPE_LABEL[draft.sourceType]}：{draft.sourceName} →
+            </a>
+          </div>
 
           {/* コンテンツプレビュー */}
           <div className="relative">
@@ -477,10 +526,26 @@ function SavedDraftCard({
 
         <div className="flex-shrink-0 flex flex-col gap-1.5">
           <button
+            onClick={handleCopy}
+            className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-colors ${
+              copied
+                ? 'bg-green-100 text-green-700'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
+          >
+            {copied ? 'コピー済' : 'コピー'}
+          </button>
+          <button
             onClick={onReedit}
             className="text-xs px-3 py-1.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg font-medium transition-colors"
           >
-            再編集
+            編集
+          </button>
+          <button
+            onClick={onDuplicate}
+            className="text-xs px-3 py-1.5 bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200 rounded-lg font-medium transition-colors"
+          >
+            複製
           </button>
           <button
             onClick={onDelete}

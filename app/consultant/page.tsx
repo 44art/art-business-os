@@ -308,6 +308,19 @@ export default function ConsultantPage() {
     setTimeout(() => setSavedMsg(''), 2500)
   }
 
+  function handleDuplicate(r: ConsultantReport) {
+    const now = new Date().toISOString()
+    const copy: ConsultantReport = {
+      ...r,
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      status: 'draft',
+      generatedAt: now,
+      updatedAt: now,
+    }
+    saveConsultantReport(copy)
+    setReports(getConsultantReports())
+  }
+
   function handleDelete(id: string) {
     if (!confirm('この診断レポートを削除しますか？')) return
     deleteConsultantReport(id)
@@ -647,7 +660,20 @@ export default function ConsultantPage() {
                       </div>
                     )}
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <a
+                      href={r.sourceType === 'brand' ? '/brand' : r.sourceType === 'artwork' ? `/artworks/${r.sourceId}/edit` : `/workshops/${r.sourceId}/edit`}
+                      className="text-xs text-gray-500 hover:underline"
+                    >
+                      素材→
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => handleDuplicate(r)}
+                      className="text-xs text-gray-600 hover:underline"
+                    >
+                      複製
+                    </button>
                     <button
                       type="button"
                       onClick={() => setExpandedReportId(expandedReportId === r.id ? '' : r.id)}

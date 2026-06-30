@@ -166,6 +166,20 @@ export default function LpPage() {
     setSavedLps(getLpDrafts())
   }
 
+  // ── 複製 ──
+  function handleDuplicateLp(lp: LandingPageDraft) {
+    const now = new Date().toISOString()
+    const copy: LandingPageDraft = {
+      ...lp,
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      status: 'draft',
+      generatedAt: now,
+      updatedAt: now,
+    }
+    saveLpDraft(copy)
+    setSavedLps(getLpDrafts())
+  }
+
   // ── 再編集 ──
   function handleReedit(lp: LandingPageDraft) {
     setSelectedPersonaId(lp.personaId)
@@ -489,19 +503,39 @@ export default function LpPage() {
                           {heroSection.content.split('\n')[0].slice(0, 60)}
                         </p>
                       )}
-                      <p className="text-xs text-slate-400">素材：{lp.sourceName}</p>
-                      {lp.referencedContentName && (
-                        <span className="inline-block text-xs bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded-full mt-1">
-                          参照：{lp.referencedContentName}
-                        </span>
-                      )}
+                      <div className="flex items-center gap-2 flex-wrap mt-1">
+                        <a
+                          href={`/personas/${lp.personaId}/edit`}
+                          className="text-xs text-indigo-600 hover:underline"
+                        >
+                          {lp.personaName} →
+                        </a>
+                        <span className="text-slate-300">|</span>
+                        <a
+                          href={lp.sourceType === 'brand' ? '/brand' : lp.sourceType === 'artwork' ? `/artworks/${lp.sourceId}/edit` : `/workshops/${lp.sourceId}/edit`}
+                          className="text-xs text-slate-500 hover:underline"
+                        >
+                          {lp.sourceName} →
+                        </a>
+                        {lp.referencedContentName && (
+                          <span className="text-xs bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded-full">
+                            参照：{lp.referencedContentName}
+                          </span>
+                        )}
+                      </div>
                     </div>
                     <div className="flex-shrink-0 flex flex-col gap-1.5">
                       <button
                         onClick={() => handleReedit(lp)}
                         className="text-xs px-3 py-1.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg font-medium transition-colors"
                       >
-                        再編集
+                        編集
+                      </button>
+                      <button
+                        onClick={() => handleDuplicateLp(lp)}
+                        className="text-xs px-3 py-1.5 bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200 rounded-lg font-medium transition-colors"
+                      >
+                        複製
                       </button>
                       <button
                         onClick={() => handleDeleteLp(lp.id)}

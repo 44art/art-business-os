@@ -226,6 +226,39 @@ export default function SnsStrategyPage() {
     setTimeout(() => setSavedMsg(''), 2500)
   }
 
+  // ─── 再編集 ──────────────────────────────────────────
+
+  function handleReedit(draft: SnsStrategyDraft) {
+    setSelectedPersonaId(draft.personaId)
+    setSelectedGoal(draft.goal)
+    setSelectedPlatforms(draft.platforms)
+    setSelectedContentId(draft.referencedContentId ?? '')
+    setSelectedLpId(draft.referencedLpId ?? '')
+    setSelectedLineId(draft.referencedLineId ?? '')
+    setGenerated(draft)
+    const allOpen: Record<string, boolean> = {}
+    SNS_SECTION_KEYS.forEach((k) => { allOpen[k] = true })
+    setExpandedSections(allOpen)
+    setTimeout(() => {
+      document.getElementById('sns-editor')?.scrollIntoView({ behavior: 'smooth' })
+    }, 100)
+  }
+
+  // ─── 複製 ─────────────────────────────────────────────
+
+  function handleDuplicate(draft: SnsStrategyDraft) {
+    const now = new Date().toISOString()
+    const copy: SnsStrategyDraft = {
+      ...draft,
+      id: makeId(),
+      status: 'draft',
+      generatedAt: now,
+      updatedAt: now,
+    }
+    saveSnsDraft(copy)
+    setSnsDrafts(getSnsDrafts())
+  }
+
   // ─── 削除 ────────────────────────────────────────────
 
   function handleDelete(id: string) {
@@ -506,7 +539,7 @@ export default function SnsStrategyPage() {
 
       {/* 生成結果 */}
       {generated && (
-        <section className="space-y-4">
+        <section id="sns-editor" className="space-y-4">
           {/* AI免責 */}
           <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
             <p className="text-xs text-amber-700">
@@ -657,7 +690,18 @@ export default function SnsStrategyPage() {
                         {SNS_PLATFORM_CONFIG[p].label}
                       </span>
                     ))}
-                    <span className="text-xs text-gray-500">{draft.personaName}</span>
+                    <a
+                      href={`/personas/${draft.personaId}/edit`}
+                      className="text-xs text-indigo-600 hover:underline"
+                    >
+                      {draft.personaName} →
+                    </a>
+                    <a
+                      href={draft.sourceType === 'brand' ? '/brand' : draft.sourceType === 'artwork' ? `/artworks/${draft.sourceId}/edit` : `/workshops/${draft.sourceId}/edit`}
+                      className="text-xs text-gray-500 hover:underline"
+                    >
+                      {draft.sourceName} →
+                    </a>
                     {draft.referencedContentName && (
                       <span className="text-xs bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded-full">
                         {draft.referencedContentName}
@@ -676,6 +720,20 @@ export default function SnsStrategyPage() {
                     <span className="text-xs text-gray-400">{fmtDate(draft.updatedAt)}</span>
                   </div>
                   <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => handleReedit(draft)}
+                      className="text-xs text-indigo-600 hover:underline font-medium"
+                    >
+                      編集
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDuplicate(draft)}
+                      className="text-xs text-gray-600 hover:underline"
+                    >
+                      複製
+                    </button>
                     <button
                       type="button"
                       onClick={() => setExpandedDraftId(expandedDraftId === draft.id ? '' : draft.id)}

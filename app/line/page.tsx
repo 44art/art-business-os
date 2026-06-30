@@ -184,6 +184,20 @@ export default function LinePage() {
     setSavedLineDrafts(getLineDrafts())
   }
 
+  // ── 複製 ──
+  function handleDuplicateLine(lineDraft: LineStrategyDraft) {
+    const now = new Date().toISOString()
+    const copy: LineStrategyDraft = {
+      ...lineDraft,
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      status: 'draft',
+      generatedAt: now,
+      updatedAt: now,
+    }
+    saveLineDraft(copy)
+    setSavedLineDrafts(getLineDrafts())
+  }
+
   // ── 再編集 ──
   function handleReedit(lineDraft: LineStrategyDraft) {
     setSelectedPersonaId(lineDraft.personaId)
@@ -581,15 +595,30 @@ export default function LinePage() {
                           {registerSection.content.split('\n')[0].slice(0, 60)}
                         </p>
                       )}
+                      <div className="flex items-center gap-2 flex-wrap mt-1">
+                        <a
+                          href={`/personas/${lineDraft.personaId}/edit`}
+                          className="text-xs text-indigo-600 hover:underline"
+                        >
+                          {lineDraft.personaName} →
+                        </a>
+                        <span className="text-slate-300">|</span>
+                        <a
+                          href={lineDraft.sourceType === 'brand' ? '/brand' : lineDraft.sourceType === 'artwork' ? `/artworks/${lineDraft.sourceId}/edit` : `/workshops/${lineDraft.sourceId}/edit`}
+                          className="text-xs text-slate-500 hover:underline"
+                        >
+                          {lineDraft.sourceName} →
+                        </a>
+                      </div>
                       <div className="flex flex-wrap gap-1 mt-1">
                         {lineDraft.referencedContentName && (
                           <span className="text-xs bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded-full">
-                            コンテンツ：{lineDraft.referencedContentName}
+                            参照コンテンツ：{lineDraft.referencedContentName}
                           </span>
                         )}
                         {lineDraft.referencedLpName && (
                           <span className="text-xs bg-amber-50 text-amber-600 px-1.5 py-0.5 rounded-full">
-                            LP：{lineDraft.referencedLpName}
+                            参照LP：{lineDraft.referencedLpName}
                           </span>
                         )}
                       </div>
@@ -602,7 +631,13 @@ export default function LinePage() {
                         onClick={() => handleReedit(lineDraft)}
                         className="text-xs px-3 py-1.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg font-medium transition-colors"
                       >
-                        再編集
+                        編集
+                      </button>
+                      <button
+                        onClick={() => handleDuplicateLine(lineDraft)}
+                        className="text-xs px-3 py-1.5 bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200 rounded-lg font-medium transition-colors"
+                      >
+                        複製
                       </button>
                       <button
                         onClick={() => handleDeleteDraft(lineDraft.id)}
