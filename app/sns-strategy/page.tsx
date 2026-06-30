@@ -12,6 +12,7 @@ import type {
   SnsStrategyGoal,
   SnsStrategyPlatform,
   SnsStrategyDraft,
+  UsageStatus,
 } from '@/types'
 import {
   getPersonas,
@@ -27,6 +28,8 @@ import {
   deleteSnsDraft,
 } from '@/lib/storage'
 import { generateSnsSections, SNS_GOAL_CONFIG, SNS_PLATFORM_CONFIG, SNS_SECTION_KEYS } from '@/lib/sns'
+import { CopyButton } from '@/components/CopyButton'
+import { UsageStatusBadge } from '@/components/UsageStatusBadge'
 
 // ─── 型・定数 ─────────────────────────────────────────────
 
@@ -252,10 +255,16 @@ export default function SnsStrategyPage() {
       ...draft,
       id: makeId(),
       status: 'draft',
+      usageStatus: 'unused',
       generatedAt: now,
       updatedAt: now,
     }
     saveSnsDraft(copy)
+    setSnsDrafts(getSnsDrafts())
+  }
+
+  function handleUpdateStatusSns(id: string, status: UsageStatus) {
+    updateSnsDraft(id, { usageStatus: status })
     setSnsDrafts(getSnsDrafts())
   }
 
@@ -685,6 +694,7 @@ export default function SnsStrategyPage() {
                       {PHASE_LABEL[draft.marketingPhaseLink]}
                     </span>
                     <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">{draft.goalLabel}</span>
+                    <UsageStatusBadge status={draft.usageStatus} onChange={(s) => handleUpdateStatusSns(draft.id, s)} />
                     {draft.platforms.map((p) => (
                       <span key={p} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
                         {SNS_PLATFORM_CONFIG[p].label}
@@ -771,7 +781,10 @@ export default function SnsStrategyPage() {
                     {/* 全セクション */}
                     {draft.sections.map((section) => (
                       <div key={section.key} className="text-xs">
-                        <p className="font-medium text-gray-700 mb-0.5">{section.label}</p>
+                        <div className="flex items-center justify-between mb-0.5">
+                          <p className="font-medium text-gray-700">{section.label}</p>
+                          <CopyButton text={section.content} />
+                        </div>
                         <p className="text-gray-600 whitespace-pre-wrap bg-gray-50 rounded p-2 leading-relaxed">{section.content}</p>
                       </div>
                     ))}

@@ -1,11 +1,13 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import type { Persona, Brand, Artwork, Workshop, ContentDraft, ContentType } from '@/types'
+import type { Persona, Brand, Artwork, Workshop, ContentDraft, ContentType, UsageStatus } from '@/types'
 import {
   getBrand, getArtworks, getWorkshops, getPersonas,
-  getContentDrafts, saveContentDraft, deleteContentDraft,
+  getContentDrafts, saveContentDraft, updateContentDraft, deleteContentDraft,
 } from '@/lib/storage'
+import { CopyButton } from '@/components/CopyButton'
+import { UsageStatusBadge } from '@/components/UsageStatusBadge'
 import { generateContentDraft, CONTENT_TYPE_CONFIG } from '@/lib/content'
 
 // ─── 定数 ──────────────────────────────────────────────────
@@ -150,10 +152,17 @@ export default function ContentPage() {
       ...draft,
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       status: 'draft',
+      usageStatus: 'unused',
       generatedAt: now,
       updatedAt: now,
     }
     saveContentDraft(copy)
+    setSavedDrafts(getContentDrafts())
+  }
+
+  // ── 使用状況更新 ──
+  function handleUpdateStatus(id: string, status: UsageStatus) {
+    updateContentDraft(id, { usageStatus: status })
     setSavedDrafts(getContentDrafts())
   }
 
@@ -390,6 +399,7 @@ export default function ContentPage() {
                 onReedit={() => handleReedit(draft)}
                 onDuplicate={() => handleDuplicate(draft)}
                 onDelete={() => handleDeleteDraft(draft.id)}
+                onUpdateStatus={(s) => handleUpdateStatus(draft.id, s)}
               />
             ))}
           </div>
@@ -465,11 +475,13 @@ function SavedDraftCard({
   onReedit,
   onDuplicate,
   onDelete,
+  onUpdateStatus,
 }: {
   draft: ContentDraft
   onReedit: () => void
   onDuplicate: () => void
   onDelete: () => void
+  onUpdateStatus: (status: UsageStatus) => void
 }) {
   const [expanded, setExpanded] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -491,6 +503,7 @@ function SavedDraftCard({
               {PHASE_LABEL[draft.phaseLink]}
             </span>
             <span className="text-xs font-medium text-slate-700">{cfg.label}</span>
+            <UsageStatusBadge status={draft.usageStatus} onChange={onUpdateStatus} />
             <span className="text-xs text-slate-400">{fmtDate(draft.updatedAt)}</span>
           </div>
           <div className="flex items-center gap-2 mb-2 flex-wrap">

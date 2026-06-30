@@ -12,6 +12,7 @@ import type {
   SnsStrategyDraft,
   ConsultantReport,
   ConsultantPhaseItem,
+  UsageStatus,
 } from '@/types'
 import {
   getBrand,
@@ -28,6 +29,8 @@ import {
   deleteConsultantReport,
 } from '@/lib/storage'
 import { generateConsultantReport } from '@/lib/consultant'
+import { CopyButton } from '@/components/CopyButton'
+import { UsageStatusBadge } from '@/components/UsageStatusBadge'
 
 // ─── 定数 ─────────────────────────────────────────────────
 
@@ -314,10 +317,16 @@ export default function ConsultantPage() {
       ...r,
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       status: 'draft',
+      usageStatus: 'unused',
       generatedAt: now,
       updatedAt: now,
     }
     saveConsultantReport(copy)
+    setReports(getConsultantReports())
+  }
+
+  function handleUpdateStatusReport(id: string, status: UsageStatus) {
+    updateConsultantReport(id, { usageStatus: status })
     setReports(getConsultantReports())
   }
 
@@ -640,6 +649,7 @@ export default function ConsultantPage() {
                       <span className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full font-medium">
                         {sourceTypeLabel(r.sourceType)}: {r.sourceName}
                       </span>
+                      <UsageStatusBadge status={r.usageStatus} onChange={(s) => handleUpdateStatusReport(r.id, s)} />
                       <span className="text-xs text-gray-400">{fmtDate(r.updatedAt)}</span>
                     </div>
                     {r.personaNames && r.personaNames.length > 0 && (
@@ -707,13 +717,35 @@ export default function ConsultantPage() {
                     </div>
                     <div className="space-y-2 text-xs">
                       <div className="bg-red-50 rounded p-2">
-                        <p className="text-red-600 font-semibold mb-0.5">最優先改善ポイント</p>
+                        <div className="flex items-center justify-between mb-0.5">
+                          <p className="text-red-600 font-semibold">最優先改善ポイント</p>
+                          <CopyButton text={r.topPriority} />
+                        </div>
                         <p className="text-gray-700 whitespace-pre-wrap">{r.topPriority}</p>
                       </div>
                       <div className="bg-green-50 rounded p-2">
-                        <p className="text-green-600 font-semibold mb-0.5">次の一手</p>
+                        <div className="flex items-center justify-between mb-0.5">
+                          <p className="text-green-600 font-semibold">次の一手</p>
+                          <CopyButton text={r.quickWin} />
+                        </div>
                         <p className="text-gray-700 whitespace-pre-wrap">{r.quickWin}</p>
                       </div>
+                      {r.contentIdeas && r.contentIdeas.length > 0 && (
+                        <div className="bg-blue-50 rounded p-2">
+                          <div className="flex items-center justify-between mb-0.5">
+                            <p className="text-blue-600 font-semibold">コンテンツ案</p>
+                            <CopyButton text={r.contentIdeas.join('\n')} label="一括コピー" />
+                          </div>
+                          <ul className="text-gray-700 space-y-0.5">
+                            {r.contentIdeas.map((idea, i) => (
+                              <li key={i} className="flex items-start gap-1">
+                                <span className="text-blue-400 flex-shrink-0">•</span>
+                                {idea}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                     </div>
                     <p className="text-xs text-amber-600 bg-amber-50 rounded p-2">{r.aiDisclaimer}</p>
                   </div>

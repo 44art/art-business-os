@@ -121,6 +121,10 @@ export type MarketingAnalysis = {
   note?: string
 }
 
+// ─── UsageStatus ─────────────────────────────────────────
+
+export type UsageStatus = 'unused' | 'planned' | 'used' | 'revising'
+
 // ─── ContentDraft ────────────────────────────────────────
 
 export type ContentType =
@@ -156,6 +160,7 @@ export type ContentDraft = {
   hashtags: string[]
   // メタ
   status: 'draft' | 'saved'
+  usageStatus?: UsageStatus
   generatedAt: string
   updatedAt: string
 }
@@ -198,6 +203,7 @@ export type LandingPageDraft = {
   lineRegistrationUrl: string  // LINE登録URL（任意）
   // メタ
   status: 'draft' | 'saved'
+  usageStatus?: UsageStatus
   generatedAt: string
   updatedAt: string
 }
@@ -243,6 +249,7 @@ export type LineStrategyDraft = {
   snsCtaText: string             // SNS投稿でのLINE誘導文言
   // メタ
   status: 'draft' | 'saved'
+  usageStatus?: UsageStatus
   generatedAt: string
   updatedAt: string
 }
@@ -285,6 +292,7 @@ export type ConsultantReport = {
   aiDisclaimer: string
   // メタ
   status: 'draft' | 'saved'
+  usageStatus?: UsageStatus
   generatedAt: string
   updatedAt: string
 }
@@ -358,6 +366,7 @@ export type SnsStrategyDraft = {
   primaryCta: string       // 主要CTA文言
   // メタ
   status: 'draft' | 'saved'
+  usageStatus?: UsageStatus
   generatedAt: string
   updatedAt: string
 }

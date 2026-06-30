@@ -3,13 +3,15 @@
 import { useState, useEffect, useCallback } from 'react'
 import type {
   Persona, Brand, Artwork, Workshop,
-  ContentDraft, LandingPageDraft, LineStrategyDraft, LineGoal, LineSection,
+  ContentDraft, LandingPageDraft, LineStrategyDraft, LineGoal, LineSection, UsageStatus,
 } from '@/types'
 import {
   getBrand, getArtworks, getWorkshops, getPersonas,
   getContentDrafts, getLpDrafts,
-  getLineDrafts, saveLineDraft, deleteLineDraft,
+  getLineDrafts, saveLineDraft, updateLineDraft, deleteLineDraft,
 } from '@/lib/storage'
+import { CopyButton } from '@/components/CopyButton'
+import { UsageStatusBadge } from '@/components/UsageStatusBadge'
 import { generateLineSections, LINE_GOAL_CONFIG, LINE_SECTION_KEYS } from '@/lib/line'
 
 // ─── 定数 ──────────────────────────────────────────────────
@@ -191,10 +193,16 @@ export default function LinePage() {
       ...lineDraft,
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       status: 'draft',
+      usageStatus: 'unused',
       generatedAt: now,
       updatedAt: now,
     }
     saveLineDraft(copy)
+    setSavedLineDrafts(getLineDrafts())
+  }
+
+  function handleUpdateStatusLine(id: string, status: UsageStatus) {
+    updateLineDraft(id, { usageStatus: status })
     setSavedLineDrafts(getLineDrafts())
   }
 
@@ -588,6 +596,7 @@ export default function LinePage() {
                           {cfg.phaseLabel}
                         </span>
                         <span className="text-sm font-semibold text-slate-900">{cfg.label}</span>
+                        <UsageStatusBadge status={lineDraft.usageStatus} onChange={(s) => handleUpdateStatusLine(lineDraft.id, s)} />
                         <span className="text-xs text-slate-400">/ {lineDraft.personaName}</span>
                       </div>
                       {registerSection && (
@@ -659,7 +668,10 @@ export default function LinePage() {
                     <div className="mt-4 space-y-3">
                       {lineDraft.sections.map((s) => (
                         <div key={s.key} className="border-l-2 border-slate-200 pl-3">
-                          <p className="text-xs font-semibold text-slate-500 mb-1">{s.label}</p>
+                          <div className="flex items-center justify-between mb-1">
+                            <p className="text-xs font-semibold text-slate-500">{s.label}</p>
+                            <CopyButton text={s.content} />
+                          </div>
                           <pre className="text-sm text-slate-700 whitespace-pre-wrap font-sans leading-relaxed">
                             {s.content}
                           </pre>
@@ -667,7 +679,10 @@ export default function LinePage() {
                       ))}
                       {lineDraft.snsCtaText && (
                         <div className="border-l-2 border-blue-200 pl-3">
-                          <p className="text-xs font-semibold text-blue-500 mb-1">SNS誘導文言（SNS戦略引き継ぎ）</p>
+                          <div className="flex items-center justify-between mb-1">
+                            <p className="text-xs font-semibold text-blue-500">SNS誘導文言（SNS戦略引き継ぎ）</p>
+                            <CopyButton text={lineDraft.snsCtaText} />
+                          </div>
                           <pre className="text-sm text-slate-700 whitespace-pre-wrap font-sans">
                             {lineDraft.snsCtaText}
                           </pre>
